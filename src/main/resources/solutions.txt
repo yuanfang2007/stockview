@@ -1,0 +1,5878 @@
+	// string permutation
+	public static ArrayList<String> perm(String str) {
+		if(str==null) return null;
+		ArrayList<String> words= new ArrayList<String>();
+		
+		if(str.length()==0) {
+			words.add("");
+			return words;
+		}
+		
+		char first=str.charAt(0);
+		
+		String remainder= str.substring(1);
+		
+
+
+		ArrayList<String> tp= perm(remainder);
+		
+		for(String word: tp) {
+			for(int i=0;i<=word.length();i++) {
+				words.add(insert(first,word,i));
+			}
+			
+		}
+		
+		
+		return words;
+		
+	}
+	
+	
+	public static String insert(char c, String word, int i){
+		return word.substring(0, i)+c+word.substring(i);
+		
+	}
+	
+		public static void main(String[] args) {
+
+		ArrayList<String> words=perm("abcd");
+		for(String word: words) {
+			System.out.println(word);
+		}
+
+	}
+/////////////////////////////////////////////////////////////////////////////
+	
+	 Scanner sc = new Scanner(System.in);
+     int i = sc.nextInt();
+	 
+//////////////////////////////////////////////////////////////////
+	    Scanner s = null;
+
+        try {
+            s = new Scanner(new BufferedReader(new FileReader("xanadu.txt")));
+
+            while (s.hasNext()) {
+                System.out.println(s.next());    //for string
+            }
+        } finally {
+            if (s != null) {
+                s.close();
+            }
+        }
+		
+///////////////////////////////////////////////////////////////////////////////
+//string convert
+	public static String convert() {
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Input a string:");
+		String newStr=sc.next();
+		
+		char [] newchar= newStr.toCharArray();
+		
+	
+		for(int i=0;i<newchar.length;i++) {
+			if(newchar[i]=='a' || newchar[i]=='e' || newchar[i]=='i' || newchar[i]=='o' || newchar[i]=='u') {
+				newchar[i]=(char)(newchar[i]+'A'-'a');
+			}
+			
+			else if(newchar[i]=='A' || newchar[i]=='E' || newchar[i]=='I' || newchar[i]=='O' || newchar[i]=='U') {
+				newchar[i]=(char)(newchar[i]-'A'+'a');
+			}
+		}
+		
+		
+		
+		return new String(newchar);
+	}
+	
+	///////////////////////////////////////////////////////////
+	
+		public static void phoneNum(int n) {
+
+		//LinkedList<Integer> ll = new LinkedList<Integer>();
+		Queue<LinkedList<Integer>> qu = new LinkedList<LinkedList<Integer>>();
+
+		for(int i=0;i<10;i++) {
+			if(i==4) continue;
+			LinkedList<Integer> l1=new LinkedList<Integer>(); 
+			l1.add(i);
+			qu.offer(l1);
+		}
+		
+		while (qu.peek() != null) {
+			LinkedList<Integer> l2 = qu.poll();
+
+			int size = l2.size();
+
+			if (size == n) {
+				for (int i = 0; i < size; i++) {
+					System.out.print(l2.get(i));
+				}
+				System.out.println();
+			} else {
+				for (int j = 0; j < 10; j++) {
+					if (size==0 && j == 4)
+						continue;
+					if (size > 0 && l2.get(size - 1) == j)
+						continue;
+					if (size > 1 && l2.get(size - 2) == 1
+							&& l2.get(size - 1) == 2 && j == 3)
+						continue;
+					
+					LinkedList<Integer> l3=new LinkedList<Integer>(); 
+                    
+					l3.addAll(l2);
+					l3.add(j);
+					qu.offer(l3);
+					
+
+				}
+			}
+
+		}
+	}
+	
+	////////////////////////////////////////////////////////////////
+	//tree mirror
+	public static BNode mirror(BNode nd){ //recursive algorithm
+		if(nd==null) return null;
+		if(nd.left==null&&nd.right==null) return nd;
+		
+		BNode left=mirror(nd.left);
+		BNode right=mirror(nd.right);
+		
+		
+		nd.left=right;
+		nd.right=left;
+		
+		return nd;
+		
+		
+	}
+
+	//////////////////////////////////////////////////////////////////
+	//BTree
+import java.util.LinkedList;
+import java.util.Queue;
+
+public class BNode {
+
+	int value;
+	BNode left;
+	BNode right;
+
+	BNode(int val) {
+		value = val;
+	}
+
+	BNode(int val, BNode l1, BNode r1) {
+		value = val;
+		left = l1;
+		right = r1;
+	}
+
+	public static BNode buildTree() {
+		BNode leaf1 = new BNode(1);
+		BNode leaf2 = new BNode(3);
+		BNode leaf3 = new BNode(5);
+		BNode leaf4 = new BNode(7);
+
+		BNode left = new BNode(2, leaf1, leaf2);
+		BNode right = new BNode(6, leaf3, leaf4);
+
+		BNode root = new BNode(4, left, right);
+
+		return root;
+
+	}
+
+	public static void printTree(BNode root) {
+		if (root == null)
+			return;
+		if (root.left == null && root.right == null) {
+			System.out.println(root.value);
+		}
+		Queue<BNode> qu1 = new LinkedList<BNode>();
+		Queue<BNode> qu2 = new LinkedList<BNode>();
+		qu1.offer(root);
+
+		while (true) {
+			while (qu1.peek() != null) {
+				BNode bn = qu1.poll();
+				System.out.println(bn.value);
+
+				if (bn.left != null) {
+					qu2.offer(bn.left);
+				}
+				if (bn.right != null) {
+					qu2.offer(bn.right);
+				}
+
+			}
+			
+			if(qu2.peek()==null) return;
+			Queue<BNode> tp1= qu1;
+			qu1=qu2;
+			qu2=tp1;
+			
+		}
+
+	}
+
+}
+////////////////////////////////////////////////////////////////////////////
+//Longest Valid Parentheses
+public static int longestValidParentheses(String s) {
+		// Start typing your Java solution below
+		// DO NOT write main() function
+
+		int c1 = 0;
+		int c2 = 0;
+		int max1 = 0;
+		int max2 = 0;
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			if (c == '(') {
+				c1++;
+			} else {
+				if (c2 >= c1) {
+					c1 = 0;
+					c2 = 0;
+				} else {
+					c2++;
+				}
+				if (c2 > max1) {
+					max1 = c2;
+				}
+
+			}
+		}
+
+		c1 = 0;
+		c2 = 0;
+		for (int i = s.length() - 1; i >= 0; i--) {
+			char c = s.charAt(i);
+			if (c == ')') {
+				c1++;
+			} else {
+				if (c2 >= c1) {
+					c1 = 0;
+					c2 = 0;
+				} else {
+					c2++;
+				}
+				if (c2 > max2) {
+					max2 = c2;
+				}
+
+			}
+		}
+		return Math.min(max1 * 2, max2 * 2);
+
+	}
+	
+	//////////////////////////////////////////////////////////////////////
+	//Sum Root to Leaf Numbers
+	public class Solution {
+
+	/**
+	 * @param args
+	 */
+    public static int sumNumbers(BNode root) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        LinkedList<Integer> ls=sumN(root);
+        int sum=0;
+        for(int num:ls) {
+        	sum+=num;
+        }
+
+    	return sum;
+    }
+    
+    
+    public static LinkedList<Integer> sumN(BNode root) {
+    	
+    	LinkedList<Integer> ls=new LinkedList<Integer>();
+    	if(root==null) return ls;
+    	
+    	if(root.left==null && root.right==null) {
+    		ls.add(root.value);
+    		return ls;
+    	}
+    	
+    	if(root.left!=null) {
+    		LinkedList<Integer> ls1=sumN(root.left);
+    		for(int num: ls1) {
+    			int j=10;
+    			while(num>=10) {
+    				j*=10;
+    				num/=10;
+    			}
+    			ls.add(root.value*j+num);
+    		}
+    	}
+    	if(root.right!=null) {
+    		LinkedList<Integer> ls2=sumN(root.right);
+    		for(int num: ls2) {
+    			int j=10;
+    			while(num >=10) {
+    				j*=10;
+    				num/=10;
+    			}
+    			ls.add(root.value*j+num);
+    		}
+    	}
+    	
+    	return ls;
+    	
+    }
+
+
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		BNode root=BNode.buildTree();
+		
+		
+		
+		System.out.println(sumNumbers(root));
+		
+	}
+
+}
+///////////////////////////////////////////////////////////////////////////////////////
+//atoi
+package Solution;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Scanner;
+import java.util.Stack;
+
+public class Solution {
+
+	/**
+	 * @param args
+	 */
+	public static int atoi(String str) {
+		// Start typing your Java solution below
+		// DO NOT write main() function
+		int white = 0;
+		int pos = 1;
+		// int flag=0;
+
+		ArrayList<Integer> ls = new ArrayList<Integer>();
+
+		for (int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			if (white == 0 && c == ' ')
+				continue;
+			if (white == 0 && c == '+') {
+				white = 1;
+				continue;
+			}
+			if (white == 0 && c == '-') {
+				pos = -1;
+				white = 1;
+				continue;
+			}
+			white = 1;
+			if (c > '9' || c < '0')
+				break;
+			ls.add(c - '0');
+		}
+
+		int sum = 0;
+		int j = 1;
+		if (ls.size() > 10 && pos > 0)
+			return 2147483647;
+		if (ls.size() > 10 && pos < 0)
+			return -2147483648;
+
+		if (ls.size() < 10) {
+			for (int i = ls.size() - 1; i >= 0; i--) {
+				sum += j * ls.get(i);
+				j *= 10;
+			}
+		}else{
+			String str1="2147483646";
+			String str2="2147483647";
+			if(pos>0){
+				for(int i=0;i<10;i++)
+				{
+					if(ls.get(i)>str1.charAt(i)-'0') return 2147483647;
+				}
+			}else if(pos<0){
+				for(int i=0;i<10;i++)
+				{
+					if(ls.get(i)>str2.charAt(i)-'0') return -2147483648;
+				}
+			}
+			for (int i = ls.size() - 1; i >= 0; i--) {
+				sum += j * ls.get(i);
+				j *= 10;
+			}
+		}
+		return sum * pos;
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		// BNode root=BNode.buildTree();
+
+		System.out.println(atoi("1147483645"));
+
+	}
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+//implement strstr()
+class Solution {
+public:
+    char* strStr(char* haystack, char* needle) {
+        for (;; ++haystack) {
+            char* h = haystack;
+            for (char* n = needle;; ++n, ++h) {
+                if (!*n) return haystack;
+                if (*h != *n) break;
+            }
+            if (!*h) return NULL;
+        }
+    }
+};
+///////////////////////////////////////////////////////////////////////////////////////////////
+//pow(x,n)
+    public static double pow(double x, int n) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	if(x==0) return 0;
+        double result=1;
+        //if(n==0) return 1;
+        if(n>0) {
+        	for(int i=0;i<n;i++) {
+        		result*=x;
+        	}
+        }
+        if(n<0){
+        	for(int i=0;i<-n;i++) {
+        		result*=x;
+        	}
+        	result=1/result;
+        }
+        
+        
+        return result;
+    }
+	
+	//another solution
+public class Solution {
+    public double pow(double x, int n) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+                
+    	
+        double result=x;
+        if(n==0) return 1;
+        if(x==0) return 0;
+        if(n==1) return x;
+        if(n>0) {
+        	int i=1;
+        	for(;i<n;) {
+        		result*=result;
+        		i*=2;
+        	}
+        	result=result*pow(x,n-i);
+        }
+        if(n<0){
+        	int i=1;
+        	for(;i<-n;) {
+        		result*=result;
+        		i*=2;
+        	}
+        	result=result*pow(x,-n-i);
+        	result=1/result;
+        }
+        
+        
+        return result;
+    }
+}
+	
+	
+///////////////////////////////////////////////////////////////////////////////////////
+//printBTree only one queue
+public class Solution {
+
+	/**
+	 * @param args
+	 */
+	public static void printBTree(TreeNode root) {
+		if (root == null)
+			return;
+
+		Queue<TreeNode> qu1 = new LinkedList<TreeNode>();
+		qu1.add(root);
+		while (qu1.peek() != null) {
+			TreeNode tn=qu1.poll();
+			if(tn.left!=null) qu1.offer(tn.left);
+			if(tn.right!=null) qu1.offer(tn.right);
+			System.out.println(tn.val);
+
+		}
+	}
+
+	public static void main(String[] args) {
+		TreeNode root=TreeNode.buildTree();
+		printBTree(root);
+
+	}
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+//circular queue
+public class Solution {
+
+	/**
+	 * @param args
+	 */
+	private Integer [] queue=null;
+	private int head;
+	private int size;
+	private int tail;
+	
+
+	public synchronized boolean initialize(int size) {
+		if(size<1) return false;
+		this.size=size;
+		queue=new Integer[size];
+		head=0;
+		tail=0;
+		return true;
+
+	}
+
+	public synchronized boolean enqueue(Integer data) {
+		if(queue==null) return false;
+		int index=(tail+1)%size;
+		queue[tail]=data;
+		tail=index;
+		
+		return true;
+	}
+
+	public synchronized Integer dequeue() {
+		if(queue==null) return null;
+		
+		if(tail==head) return null;
+		
+		int index=(head+1)%size;
+		Integer result=queue[head];
+		head=index;
+		
+		return result;
+
+	}
+
+	public static void main(String[] args) {
+		Solution s1=new Solution();
+		s1.initialize(5);
+		s1.enqueue(3);
+		s1.enqueue(4);
+		s1.enqueue(5);
+		s1.enqueue(6);
+		s1.enqueue(7);
+		s1.enqueue(8);
+		s1.enqueue(9);
+		s1.enqueue(10);
+		s1.enqueue(11);
+		for(int i=0;i<10;i++) {
+			System.out.println(s1.dequeue());
+		}
+	}
+
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//priority queue, the kth largest element.
+package Solution;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.Scanner;
+import java.util.Stack;
+
+public class Solution {
+
+	/**
+	 * @param args
+	 * @throws FileNotFoundException
+	 */
+	public static void printKLargest(File file, int k)
+			throws FileNotFoundException {
+		Scanner scanner = new Scanner(file);
+		Comparator<Integer> comp1=new comparator();
+		
+		PriorityQueue<Integer> minqueue = new PriorityQueue<Integer>(k, comp1);
+
+		while (scanner.hasNext()) {
+			minqueue.add(scanner.nextInt());
+			while (minqueue.size() > k)
+				minqueue.poll();
+		}
+		
+		scanner.close();
+		
+		while(minqueue.peek()!=null) {
+			System.out.println(minqueue.poll());
+		}
+
+	}
+
+
+
+	public static void main(String[] args) throws FileNotFoundException {
+		File f1=new File("C:/a1.txt");
+		printKLargest(f1,19);
+	}
+
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+//LeetCode
+//Binary Tree Level Order Traversal
+public class Solution {
+    public ArrayList<ArrayList<Integer>> levelOrder(TreeNode root) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        
+        ArrayList<ArrayList<Integer>> aa=new ArrayList<ArrayList<Integer>>();
+        if(root==null) return aa;
+        
+        Queue <TreeNode> q=new LinkedList<TreeNode> ();
+        q.add(root);
+        
+        while(true){
+            Queue <TreeNode> q1=new LinkedList<TreeNode> ();
+                
+            ArrayList<Integer> a=new ArrayList<Integer>();
+            while(q.peek()!=null) {
+
+                TreeNode t1=q.poll();
+                a.add(t1.val);
+                
+                if(t1.left !=null)
+                q1.offer(t1.left);
+                if(t1.right !=null)
+                q1.offer(t1.right);
+            }
+            
+            aa.add(a);
+            if(q1.peek()==null) break;
+            q=q1;
+        }
+        
+        return aa;
+    
+        
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+//binal tree in-order traversal
+package Solution;
+
+import java.util.PriorityQueue;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Stack;
+
+public class Solution {
+	
+	
+	public static void inorderPrint(TreeNode root) {
+		Stack<TreeNode> s=new Stack<TreeNode>();
+		if(root==null) return;
+		TreeNode n0=root;
+		s.push(n0);
+		
+		while(s.size()!=0) {
+			while(n0.left !=null) {
+				s.add(n0.left);
+				n0=n0.left;
+			}
+			
+			TreeNode n1=s.pop(); System.out.println(n1.val);
+			
+			if(n1.right!=null) {
+				n0=n1.right;
+				s.add(n0);
+			}
+		}
+		
+		
+	}
+
+
+
+	public static void main(String[] args) {
+		
+		TreeNode root=TreeNode.buildTree();
+		inorderPrint(root);
+		
+	}
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
+//increasing subsequences 2D
+
+public class Solution {
+
+	public static int longestIncreasingSequence(int[][] grid) {
+		int rows = grid.length;
+		int cols = grid[0].length;
+		int max = 1;
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				int tmp = longestIncreasing(grid, i, j);
+				if (tmp > max)
+					max = tmp;
+			}
+		}
+
+		return max;
+
+	}
+
+	public static int longestIncreasing(int[][] grid, int row, int col) {
+		int rows = grid.length;
+		int cols = grid[0].length;
+
+		if (row > rows - 1 || col > cols - 1 || row < 0 || col < 0)
+			return 0;
+
+		int max = 1;
+
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				if ((i == 0 && j == 0) || row+i<0 || col+j<0 || row+i>=rows || col+j>= cols)
+					continue;
+
+				if (grid[row + i][col + j] == grid[row][col]) {
+					int[][] grid1 = new int[rows][cols];
+					
+			        for(int ii=0;ii<rows;ii++) {
+			        	for(int jj=0;jj<cols; jj++)
+			        		grid1[ii][jj]=grid[ii][jj];
+			        }	
+
+			        grid1[row][col] = Integer.MIN_VALUE;
+
+			        int tmp1 = longestIncreasing(grid1, row + i, col + j) + 1;
+					if (max < tmp1)
+						max = tmp1;
+				} else if(grid[row + i][col + j] > grid[row][col]) {
+
+					int tmp = longestIncreasing(grid, row + i, col + j) + 1;
+					if (max < tmp) {
+						max = tmp;
+					}
+				}
+
+			}
+		}
+
+		return max;
+	}
+
+	public static void main(String[] args) {
+
+		int[][] grid = { { 8, 2, 4 }, { 0, 7, 1 }, { 3, 7, 9 } };
+
+		// System.out.println(longestIncreasingSequence(grid));
+
+		System.out.println(longestIncreasingSequence(grid));
+		System.out.println(longestIncreasing(grid, 2, 1));
+	}
+
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+//epic snake
+	public static int snake(int[][] grid) {
+
+		int rows = grid.length;
+		int cols = grid[0].length;
+		int[][] dp = new int[rows][cols];
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				dp[i][j] = 1;
+				if (j - 1 >= 0) {
+					if (Math.abs(grid[i][j - 1] - grid[i][j]) == 1) {
+						dp[i][j] = Math.max(dp[i][j], dp[i][j - 1] + 1);
+					}
+				}
+
+				if (i - 1 >= 0) {
+					if (Math.abs(grid[i - 1][j] - grid[i][j]) == 1) {
+						dp[i][j] = Math.max(dp[i][j], dp[i - 1][j] + 1);
+					}
+				}
+			}
+		}
+		
+		int max=0;
+		for(int i=0;i< rows; i++) {
+			for(int j=0; j<cols;j++) {
+				if(max<dp[i][j]) max=dp[i][j];
+			}
+		}
+
+		return max;
+
+	}
+	
+///////////////////////////////////////////////////////////////////////////////////////
+//all subsets
+	public static ArrayList<ArrayList<Integer>> getSub(ArrayList<Integer> set, int index) {
+		
+		int size=set.size();
+		
+		ArrayList<ArrayList<Integer>> allsubs=new ArrayList<ArrayList<Integer>>();
+		
+		if(index== size) {
+			
+			allsubs.add(new ArrayList<Integer>());
+			return allsubs;
+			
+		}else{
+			
+			ArrayList<ArrayList<Integer>> subs=getSub(set, index+1);
+			allsubs.addAll(subs);
+			
+			int ele= set.get(index);
+			
+			for(ArrayList<Integer> subset: subs) {
+				ArrayList<Integer> newsubset = new ArrayList<Integer>();
+				newsubset.addAll(subset);
+				newsubset.add(ele);
+				allsubs.add(newsubset);
+			}
+			
+			return allsubs;
+			
+		}
+		
+		
+	}
+	
+//////////////////////////////////////////////////////////////////////////////////////
+//return all subsets
+	public static ArrayList<ArrayList<Integer>> getSub(ArrayList<Integer> set, int index) {
+		
+		ArrayList<ArrayList<Integer>> allsubsets= new ArrayList<ArrayList<Integer>>();
+		int max=1 << set.size();
+		for(int k=0; k< max; k++) {
+			ArrayList<Integer> subset = convertIntToSet(k,set);
+			allsubsets.add(subset);
+		}
+		
+		return allsubsets;
+		
+		
+		
+	}
+	
+	
+	public static ArrayList<Integer> convertIntToSet(int x, ArrayList<Integer> set) {
+		ArrayList<Integer> subset = new ArrayList<Integer> ();
+		int index=0;
+		for( int k=x; k>0; k>>=1) {
+			if((k&1)==1) {
+				subset.add(set.get(index));
+			}
+			index++;
+		}
+		return subset;
+	}
+	
+	
+/////////////////////////////////////////////////////////////////////////////////////
+//leetcode: generate parenthesis
+//n pairs of valid () parenthesis
+	public void addParen(ArrayList<String> list, int leftRem, int rightRem,
+			char[] str, int count) {
+		if (leftRem < 0 || rightRem < leftRem)
+			return;
+
+		if (leftRem == 0 && rightRem == 0) {
+			String s = String.copyValueOf(str);
+			list.add(s);
+		} else {
+			if (leftRem > 0) {
+				str[count] = '(';
+				addParen(list, leftRem - 1, rightRem, str, count + 1);
+			}
+			
+			if (rightRem > leftRem) {
+				str[count] = ')';
+				addParen(list, leftRem, rightRem-1,str, count+1);
+			}
+
+		}
+
+	}
+	
+///////////////////////////////////////////////////////////////////////////////////////////
+//string to long
+public static long StringToLong(String s) {
+		
+		if(s==null) {
+			System.out.println("Null input");
+			return Long.MIN_VALUE;
+		}
+			
+		
+		char c; 
+		long result=0;
+		int sign=1;
+		
+		//+,- sign
+		for(int i=0; i< s.length(); i++) {
+			
+			//check sign
+			if(i==0 && s.charAt(i)== '-') {
+				sign=-1;
+				continue;
+			}
+			if(i==0 && s.charAt(i)== '+') {
+				continue;
+			}
+			
+			
+			c=s.charAt(i);
+			
+			int tmp=c-'0';
+			//check if there is illegal character
+			if(tmp<0 || tmp >9) {
+				System.out.println("The string contains illegal character!");
+				return Long.MAX_VALUE;
+			}
+			
+			
+			//check if out of range
+			if(sign>0)
+			{
+				if(result>Long.MAX_VALUE/10 || (result==Long.MAX_VALUE/10 && tmp>7)){
+					System.out.println("The string represents an integer beyond the range of ["+Long.MIN_VALUE+","+Long.MAX_VALUE+"]");
+					return Long.MAX_VALUE;
+				}
+			}else{
+				if(result>Long.MAX_VALUE/10 || (result==Long.MAX_VALUE/10 && tmp>8)){
+					System.out.println("The string represents an integer beyond the range of ["+Long.MIN_VALUE+","+Long.MAX_VALUE+"]");
+					return Long.MIN_VALUE;
+				}
+			}
+			
+			result=result*10+tmp;
+			
+		}
+		return sign*result;
+	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//merge sorted linked lists
+public static Node merge(Node a, Node b) {
+		if(a==null) return b;
+		if(b==null) return a;
+		
+		Node p,q;
+		if(a.data<=b.data) {
+			p=a;
+			q=b;
+		}else{
+			p=b;
+			q=a;
+		}
+		
+		Node p1=p;
+		Node p1p=p;
+		Node q1=q;
+		Node q1p=q;
+		
+		while(true) {
+			while(p1.data <= q1.data && p1!=null) {
+				p1p=p1;
+				p1=p1.next;
+			}
+			
+			if(p1==null) {
+				p1p.next=q1;
+				
+				return p;
+			}
+			p1p.next=q1;
+			q1p=q1;
+			q1=q1.next;
+			q1p.next=p1;
+			
+			if(q1==null) {
+				return p;
+			}			
+			
+
+			
+		}
+}
+		
+		
+///////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Add Two Numbers
+public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+       int carry=0;
+       
+       return addHelper(l1,l2,0);
+       
+       
+    }
+    
+    
+    public static ListNode addHelper(ListNode l1, ListNode l2, int carry){
+        if(l1==null && l2==null) {
+            if(carry==0){
+                return null;
+            }else return new ListNode(carry);
+            
+        }
+        
+        if(l1==null) {
+            int tmp=(l2.val+carry)/10;
+            l2.val=(l2.val+carry)%10;
+            carry=tmp;
+            ListNode l3=addHelper(l1,l2.next, carry);
+            l2.next=l3;
+            return l2;
+        }
+        
+        
+        if(l2==null) {
+            int tmp=(l1.val+carry)/10;
+            l1.val=(l1.val+carry)%10;
+            carry=tmp;
+            ListNode l3=addHelper(l1.next,l2, carry);
+            l1.next=l3;
+            return l1;
+        }
+        
+        int tmp=(l1.val+l2.val+carry)/10;
+        l1.val=(l1.val+l2.val+carry)%10;
+        carry=tmp;
+        ListNode l3=addHelper(l1.next,l2.next,carry);
+        l1.next=l3;
+        return l1;
+        
+    }
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//addTwoNumbers (not correct! no recursive version)
+public Node addTwoNumbers(Node l1, Node l2) {
+		// Start typing your Java solution below
+		// DO NOT write main() function
+
+		if (l1 == null)
+			return l2;
+		if (l2 == null)
+			return l1;
+
+		Node cur1 = l1;
+		Node cur1p = l1;
+
+		Node cur2 = l2;
+		Node cur2p = l2;
+
+		int carry = 0;
+
+		while (cur1 != null && cur2 != null) {
+            int tmp1=(cur1.data + cur2.data + carry) / 10;
+			cur1.data = (cur1.data + cur2.data + carry) % 10;
+			carry = tmp1;
+
+			cur1p = cur1;
+			cur1 = cur1.next;
+
+			cur2p = cur2;
+			cur2 = cur2.next;
+		}
+
+		if (cur1 == null && cur2 == null) {
+			if (carry == 0) {
+				return l1;
+			} else {
+				cur1p.next = new Node(carry);
+				return l1;
+			}
+		}
+
+		if (cur1 == null) {
+			cur1p.next = cur2;
+
+			while (cur2 != null) {
+				int tmp = (cur2.data + carry) / 10;
+				cur2.data = (cur2.data + carry) % 10;
+				carry = tmp;
+				cur2p = cur2;
+				cur2 = cur2.next;
+			}
+
+			if (carry == 0) {
+				return l1;
+			} else {
+				cur1p.next = new Node(carry);
+				return l1;
+			}
+		} 
+		
+		if (cur2 == null) {
+			while (cur1 != null) {
+				int tmp = (cur1.data + carry) / 10;
+				cur1.data = (cur1.data + carry) % 10;
+				carry = tmp;
+				cur1p=cur1;
+				cur1=cur1.next;
+			}
+			
+			if (carry == 0) {
+				return l1;
+			} else {
+				cur1p.next = new Node(carry);
+				return l1;
+			}
+		}
+	}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Longest Substring Without Repeating Characters	
+    public int lengthOfLongestSubstring(String s) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        int len=s.length();
+        int max=0;
+        int start=0;
+        
+        
+        HashMap<Character, Integer> map=new HashMap<Character, Integer>();
+        
+        for(int i=0; i<len;i++) {
+            char c=s.charAt(i);
+            if(!map.containsKey(c)) {
+                 map.put(c,i);                
+            }else if(map.containsKey(c) && map.get(c)<start) {
+                map.remove(c);
+                map.put(c,i);
+            }else{
+               
+                if(max<i-start) {
+                    max=i-start;
+                }
+                start=map.get(c)+1;
+                map.remove(c);
+                map.put(c,i);
+                
+            }
+        }
+        
+        if(max<len-start) max=len-start;
+        
+        return max;
+    }
+	
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Leetcode: Longest Palindromic Substring Palindrome
+//
+	public static String longestPalindrome(String s) {
+
+		int len = s.length();
+		int max = 1;
+		 if(len==1) return s;
+
+		String s1 = "";
+
+		for (int i = 0; i < len; i++) {
+			int m = 0;
+			while ( i + m < len && i - m >= 0 && s.charAt(i + m) == s.charAt(i - m)) {
+				m++;
+			}
+			
+			if (2 * m - 1 > max) {
+				max = 2 * m - 1;
+				s1 = s.substring(i - m+1, i + m);
+			}
+
+		}
+
+		for (int i = 0; i < len - 1; i++) {
+
+			int m = 0;
+			if (s.charAt(i) == s.charAt(i + 1)) {
+				while (i + 1 + m < len && i - m >= 0 && s.charAt(i + 1 + m) == s.charAt(i - m)) {
+					m++;
+				}
+
+				if (2 * m > max) {
+					max = 2 * m;
+					s1 = s.substring(i - m+1, i + m+1);
+				}
+
+			}
+
+		}
+
+		return s1;
+	}
+
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//2D water
+class waterContainer{
+    private int m;
+    private int n;
+    private int[][] mat;
+    private boolean[][] visited;
+    private PriorityQueue<Cell> pq;
+    private int count;
+    
+    class Cell implements Comparable<Cell>{
+        int x;
+        int y;
+        int height;
+        public Cell(int x,int y,int height){
+            this.x=x;
+            this.y=y;
+            this.height=height;
+        }
+        
+        public int compareTo(Cell o){
+            return height-o.height;
+        }
+    }
+    
+    public waterContainer(int[][] input){
+        mat=input;
+        m=mat.length;
+        n=mat[0].length;
+        visited=new boolean[m][n];
+        pq=new PriorityQueue<Cell>();
+        count=0;
+    }
+    
+    private void check(int x, int y, int lowest){
+        if(x<0 || x>=m || y<0 || y>=n || visited[x][y]) return;
+        if(mat[x][y]<lowest) count+=lowest-mat[x][y];
+        visited[x][y]=true;
+        pq.offer(new Cell(x,y,Math.max(lowest, mat[x][y])));
+    }
+    
+    public int solve(){
+        for(int i=0;i<m;i++){
+            visited[i][0]=true;
+            pq.offer(new Cell(i,0,mat[i][0]));
+                
+            visited[i][n-1]=true;
+            pq.offer(new Cell(i,n-1,mat[i][n-1]));
+        }
+        
+        for(int j=1;j<n-1;j++){
+            visited[0][j]=true;
+            pq.offer(new Cell(0,j,mat[0][j]));
+                
+            visited[m-1][j]=true;
+            pq.offer(new Cell(m-1,j,mat[m-1][j]));
+        }
+
+        while(!pq.isEmpty()){
+            Cell curr=pq.poll();
+            check(curr.x-1,curr.y,curr.height);
+            check(curr.x+1,curr.y,curr.height);
+            check(curr.x,curr.y-1,curr.height);
+            check(curr.x,curr.y+1,curr.height);
+        }
+        
+        return count;
+    }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode : sum root to leaf numbers
+    int dfs(TreeNode root, int sum){
+        if(root==null) return 0;
+        sum=sum*10+root.val;
+        if(root.left==null && root.right==null) return sum;
+        return dfs(root.left,sum) + dfs(root.right,sum);
+    }
+    
+    public int sumNumbers(TreeNode root) {
+        return dfs(root,0);
+    }
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//Leetcode 128: Longest Consecutive Sequence --good
+  int getCount(Set<Integer> hs, int v, boolean asc){
+        int count=0;
+        while(hs.contains(v)){
+            hs.remove(v);
+            count++;
+            if(asc) v++; else v--;
+        }
+        return count;
+    }
+    
+    public int longestConsecutive(int[] num) {
+        Set<Integer> hs=new HashSet<Integer>();
+        for(int v:num) hs.add(v);
+        int ans=0;
+        
+        for(int v:num) if(hs.contains(v)) ans=Math.max(ans,getCount(hs, v, false)+getCount(hs, v+1, true));
+        return ans; 
+    }
+	
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//strStr  (naive)
+
+    public static String strStr(String haystack, String needle) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        if(haystack==null || needle == null) return null;
+        for(int i=0; i<=haystack.length()-needle.length(); i++) {
+            if(haystack.charAt(i) == needle.charAt(0)) {
+                for(int j=0;j<needle.length(); j++) {
+                    
+                    if(needle.charAt(j) != haystack.charAt(i+j)) {
+                        break;
+                    }
+                    
+                    if(j==needle.length()-1) {
+                        return needle;
+                    }
+                
+                }
+            
+                
+            }
+        }
+        
+        return null;
+    }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// longest Consecutive sequence (naive)
+    public static int longestConsecutive(int[] num) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        int len=num.length;
+        Set<Integer> hs=new HashSet<Integer>();
+        int min=Integer.MAX_VALUE;
+        int max=Integer.MIN_VALUE;
+        for(int i=0;i<len;i++){
+            if(hs.contains(num[i])) continue;
+            if(num[i]>max) max=num[i];
+            if(num[i]<min) min=num[i];
+            hs.add(num[i]);
+        }
+        
+        int totnum=1;
+        int count=1;
+        for(int j=min+1;j<=max;j++) {
+            if(hs.contains(j)) {
+            	count++;
+            }else{
+                if(count>totnum) totnum=count;
+                count=0;
+            }
+        }
+        
+        if(count>totnum) totnum=count;
+        
+        return totnum;
+    }	
+	
+/////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode insert intervals (naive bad one)
+	public ArrayList<Interval> insert(ArrayList<Interval> intervals,
+			Interval newInterval) {
+		// Start typing your Java solution below
+		// DO NOT write main() function
+		boolean flag = false;
+		for (Interval interval : intervals) {
+			if (newInterval.start <= interval.end
+					&& newInterval.start >= interval.start
+					&& newInterval.end >= interval.end) {
+				interval.end = newInterval.end;
+				newInterval.start = interval.start;
+				intervals.remove(interval);
+			} else if (newInterval.end <= interval.end
+					&& newInterval.end >= interval.start
+					&& newInterval.start <= interval.start) {
+				interval.start = newInterval.start;
+				newInterval.end = interval.end;
+				intervals.remove(interval);
+
+			} else if (interval.start >= newInterval.start&& interval.end <= newInterval.end) {
+
+				newInterval.start = interval.start;
+				newInterval.end = interval.end;
+				intervals.remove(interval);
+			} else if (interval.start <= newInterval.start
+					&& interval.end >= newInterval.end) {
+				return intervals;
+			}
+
+		}
+
+		intervals.add(newInterval);
+		return intervals;
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////leetcode insert (merge intervals) intervals
+	public static ArrayList<Interval> insert(ArrayList<Interval> intervals, Interval newInterval) {
+		
+		for (int i=0;i< intervals.size();i++) {
+			Interval interval=intervals.get(i);
+			if (newInterval.start <= interval.end && newInterval.start >= interval.start && newInterval.end >= interval.end) {
+				newInterval.start = interval.start;
+				
+				intervals.remove(interval);
+			} else if (newInterval.end <= interval.end && newInterval.end >= interval.start	&& newInterval.start <= interval.start) {
+				newInterval.end = interval.end;
+				intervals.remove(interval);
+			} else if (interval.start >= newInterval.start && interval.end <= newInterval.end) {
+				intervals.remove(interval);
+			} else if (interval.start >= newInterval.start && interval.end <= newInterval.end) {
+				return intervals;
+			}
+		}
+
+		intervals.add(newInterval);
+		return intervals;
+	}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//iterator
+package com.google;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
+
+public class MyIterator<E> implements Iterator{
+
+    int pos;
+    private Collection<E> coll;
+
+    public boolean hasNext() {
+        return pos < coll.size();
+    }
+
+    public E next() {
+        if(pos == coll.size()){
+                throw new NoSuchElementException();
+        }
+        return (E) coll.toArray()[pos++];
+        }
+
+    public void remove() {
+        throw new UnsupportedOperationException();
+    }
+    public static void main(String[] args){
+        Collection<Object> list = new LinkedList<Object>();
+        list.add(1);list.add(2);list.add(3);
+        MyIterator iter = new MyIterator();
+        iter.coll = list;
+        iter.pos = 0;
+        while (iter.hasNext()){
+            System.out.println(iter.next());
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//tree iterator
+import java.util.*;
+
+public class TreeIterator<T> {
+
+    // In-order iterator for a binary tree (untested)
+
+    private Stack<TreeNode<T>> s;
+
+    public TreeIterator(TreeNode<T> root) {
+        s = new Stack<TreeNode<T>>();
+        s.push(root);
+        setNext();
+    }
+
+    public boolean hasNext() {
+        return s.peek() != null;
+    }
+
+    public TreeNode<T> next() throws Exception {
+
+        if (!hasNext())
+            throw new Exception("No next");
+
+        // Next is node at the top of the stack
+        TreeNode<T> next = s.pop();
+
+        // If the node had right child push that
+        // then all children to left
+        TreeNode<T> right = next.getrChild();
+        if (right != null) {
+            s.push(right);
+            setNext();
+        }
+        return next;
+    }
+
+    private void setNext() {
+        // push while there are left children
+        TreeNode<T> cur = s.peek();
+        while (cur != null) {
+            TreeNode<T> left = cur.getlChild();
+            if (left != null)
+                s.push(left);
+            cur = left;
+        }
+    }
+}
+
+/////////////////////////////////////////////////////////////////
+//max sub sum
+public static int maxsubarray(int array, int N) {
+	int maxsum=0;
+	int runningsum=0;
+	for(int i=0; i<N; i++) {
+		runningSum+=array[i];
+		maxsum=Math.max(maxsum, runningsum);
+		
+		if(runningsum<0) {
+			runningsum=0;
+		}
+	}
+}
+
+
+////////////////////////////////////////////////////////////////
+//route or path between two nodes in a directed graph(tree)
+public enum State {
+unvisited, visited, visiting;
+}
+
+public static boolean search(Graph g, Node start, Node end) {
+
+	LinkedList<Node> q = new LinkedList<Node>();
+
+	for(Node u: g.getNodes()) {
+	   u.state=state.unvisited;
+	}
+
+	//start.state = State.visiting;
+	q.add(start);
+
+	Node u;
+	while(!q.isEmpty()) {
+	 u=q.removeFirst();
+	 if(u!=null) {
+		for(Node v : u.getAdjacent()) {
+		  if(v.state == State.unvisited) {
+			if(v==end) {
+				return true;
+			} else {
+				//v.state=State.visiting;
+				q.add(v)
+			}
+		  }
+		}
+		u.state= State.visited;
+	 }
+	}
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//all path sum to a given value in a tree
+public void findsum(Node nd; int sum, int[] path, int level) {
+	if(nd==null) {
+		return;
+	}
+
+	path[level]=nd.data;
+	
+	int i=0;
+	for(int i=level; i>=0; i--) {
+		t+=path[i]
+		if(t==sum) {
+			print(path,i,level);
+		}
+	}
+	
+	findsum(node.left, sum, path, level+1);
+	findsum(node.right, sum, path, level+1);
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+//solve sudoku naive
+	public static void solveSudoku(char[][] board) {
+		// Start typing your Java solution below
+		// DO NOT write main() function
+		if(!solvehelper(board)){
+			System.out.println("No answer");
+		}
+
+	}
+
+	public static boolean solvehelper(char [][]board) {
+		int rows = board.length;
+		int cols = board[0].length;
+
+		if (checkFull(board))
+			return true;
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (board[i][j] == '.') {
+					
+					for (char c = '1'; c <='9'; c++) {
+						if (checkValid(board, i, j, c)) {
+							board[i][j] = c;
+							if(solvehelper(board)) {
+								return true;
+							}
+							board[i][j] = '.';
+						}
+					}
+					
+					return false;
+				}
+				
+				//board[i][j]='1';
+				
+			}
+		}
+		
+		return false;
+	}
+	
+	public static boolean checkFull(char[][] board) {
+		int rows = board.length;
+		int cols = board[0].length;
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (board[i][j] == '.')
+					return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean checkValid(char[][] board, int i, int j, char c) {
+		int rows = board.length;
+		int cols = board[0].length;
+		for (int l = 0; l < rows; l++) {
+			if (board[l][j] == c)
+				return false;
+		}
+		for (int k = 0; k < cols; k++) {
+			if (board[i][k] == c)
+				return false;
+		}
+		
+		//int a=i/3;
+		//int b=j/3;
+		//for()
+		//use hashset to check if it is there
+
+		return true;
+	}
+
+	public static void main(String[] args) {
+		
+		char[][] board = {{'.','.', '9','7','4','8','.','.','.'},{'7','.','.','.','.','.','.','.','.'},{'.','2','.','1','.','9','.','.','.'},{'.','.','7','.','.','.','2','4','.'},{'.','6','4','.','1','.','5','9','.'},{'.','9','8','.','.','.','3','.','.'}, {'.','.','.','8','.','3','.','2','.'}, {'.','.','.','.','.','.','.','.','6'},{'.','.','.','2','7','5','9','.','.'}};
+		solveSudoku(board);
+		
+		int rows = board.length;
+		int cols = board[0].length;
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				System.out.print(board[i][j]+" ");
+			}
+			System.out.println();
+	    }
+	}
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//solve sudoku good
+	public boolean isValid(char[][] board, int a, int b){
+        boolean[] flag = new boolean[9];
+        
+        
+        Set<Character> contained = new HashSet<Character>();
+        for(int j=0;j<9;j++){
+            if(contained.contains(board[a][j])) return false;
+            if(board[a][j]>'0' && board[a][j]<='9')
+                contained.add(board[a][j]);
+        }
+            
+        
+    
+        contained = new HashSet<Character>();
+        for(int j=0;j<9;j++){
+            if(contained.contains(board[j][b])) return false;
+            if(board[j][b]>'0' && board[j][b]<='9')
+                contained.add(board[j][b]);
+        }
+        
+    
+        contained = new HashSet<Character>();
+        for(int m=0;m<3;m++){
+            for(int n=0;n<3;n++){
+                int x=a/3*3+m, y=b/3*3+n;
+                if(contained.contains(board[x][y])) return false;
+                    if(board[x][y]>'0' && board[x][y]<='9')
+                        contained.add(board[x][y]);
+            }  
+        }
+    
+        return true;
+    }
+    
+    public boolean solveSudoku(char[][] board) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                if(board[i][j]=='.'){
+                    for(int k=0;k<9;k++){
+                        board[i][j]=(char)('1'+k);
+                        if(isValid(board,i,j) && solveSudoku(board)) return true;
+                        board[i][j]='.';
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;   
+    }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//string palindrome partition  (naive but good)
+	public static ArrayList<ArrayList<String>> partition(String s) {
+		Set<ArrayList<String>> set= new HashSet<ArrayList<String>> ();
+		
+		int len = s.length();
+		ArrayList<ArrayList<String>> arr1 = new ArrayList<ArrayList<String>>();
+		if (len == 0)
+			return arr1;
+		if (len == 1) {
+			ArrayList<String> a1 = new ArrayList<String>();
+			a1.add(s);
+			arr1.add(a1);
+			return arr1;
+		}
+
+		ArrayList<ArrayList<String>> arr2 = partition(s.substring(0, len - 1));
+		for (int i = 0; i < arr2.size(); i++) {
+			String tmp = "";
+			tmp += s.charAt(len - 1);
+			arr2.get(i).add(tmp);
+			ArrayList<String> all=(ArrayList<String>) arr2.get(i).clone();
+			arr1.add(all);
+			set.add(all);
+		}
+
+		for (int i = 0; i < arr2.size(); i++) {
+			ArrayList<String> a2 = arr2.get(i);
+			int len2 = a2.size();
+			if (len2 >= 2) {
+				for (int ii = len2 - 2; ii >= 0; ii--) { 
+					if (check(a2, ii, len2 - 1)) {
+						ArrayList<String> al = new ArrayList<String>();
+						al = (ArrayList<String>) a2.clone();
+						String s3 = "";
+						for (int j = len2 - 1; j >= ii; j--) {
+							s3 += al.get(j);
+							al.remove(j);
+						}
+						al.add(s3);
+						if(!set.contains(al))
+						arr1.add(al);
+						set.add(al);
+					}
+				}
+			}
+		}
+		return arr1;
+	}
+	
+	public static boolean check(ArrayList<String> s, int i, int j) {
+		String word="";
+		for(int k=i; k<=j; k++) {
+			word+=s.get(k);
+		}
+		for(int k=0, l=word.length()-1;k<=l;k++,l--) {
+			if(word.charAt(k)!=word.charAt(l)) return false;
+		}
+		return true;
+	}
+///////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: dfs: palindrome partitioning peking2
+	public static ArrayList<ArrayList<String>> partition(String s) {
+		ArrayList<ArrayList<String>> alal= new ArrayList<ArrayList<String>>();
+		
+		ArrayList<String> al=new ArrayList<String>();
+	    dfs(s,alal,0,al);
+		return alal;
+	 }
+	public static void dfs(String s, ArrayList<ArrayList<String>> alal, int start, ArrayList<String> al) {
+		int len=s.length();
+		if(start==len) {
+			alal.add(new ArrayList<String>(al));
+			return;
+		}
+		
+		for(int i=start; i<len; i++) {
+			if(isPalindrome(s,start,i)) {
+				al.add(s.substring(start,i+1));
+				dfs(s,alal,i+1,al);
+				al.remove(al.size()-1);
+			}
+		}
+	}
+
+	public static boolean isPalindrome(String s, int i, int j) {
+		for(;i<=j;i++,j--){
+			if(s.charAt(i)!=s.charAt(j)){
+				return false;
+			}
+		}
+		return true;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//Leetcode 91: Decoding ways (Decode ways)
+    public static HashMap<String, Integer>map=new HashMap<String, Integer>();
+    public static int numDecodings(String s) {
+        
+
+        if(map.containsKey(s)) return map.get(s);
+        
+        
+        int len=s.length();
+        if(len==0) return 0;
+        if(len==1 && s.charAt(0)!='0') return 1;
+        if(len==1 && s.charAt(0)=='0') return 0;
+    	String sub=s.substring(1);
+         
+    	int num=numDecodings(sub);
+        
+    	
+    	int head=s.charAt(0)-'0';
+    	int next=s.charAt(1)-'0';
+        if(head==0) return 0;
+    	if(head*10+next<=26) {
+            String sub1=s.substring(2);
+            if(sub1.length()==0) num+=1;
+            else{
+               num+=numDecodings(sub1);
+            }    		
+    	}
+    	
+    	map.put(s,num);
+    	return num;
+        
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode word search (naive but good)
+ public static boolean exist(char[][] board, String word) {
+    	for(int i=0;i<board.length;i++) {
+    		for(int j=0; j<board[0].length;j++) {
+    			if(dfs(board,word,0,i,j)) {
+    				return true;
+    			}
+    		}
+    	}
+        return false; 
+    }
+    
+    
+    public static boolean dfs(char[][] board, String word, int start, int i, int j) {
+        if(start==word.length()) return true;
+    	int rows=board.length;
+        int cols=board[0].length;
+        
+        if(i>=rows||j>=cols||i<0||j<0) return false;
+        
+        if(word.charAt(start)==board[i][j]) {
+        	board[i][j]='1';
+        	boolean result=dfs(board, word, start+1, i+1,j)||dfs(board, word, start+1, i-1,j)||dfs(board, word, start+1, i,j+1)||dfs(board, word, start+1, i,j-1);
+        	
+        	board[i][j]=word.charAt(start);
+        	
+        	return result;
+        	
+        }
+        
+        return false;
+    }
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: combine combination combinations
+    public ArrayList<ArrayList<Integer>> combine(int n, int k) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        ArrayList<ArrayList<Integer>> alal=new ArrayList<ArrayList<Integer>>();
+    	if(n<k || k==0) return alal;
+        
+        if(k==1){
+            for(int i=1;i<=n;i++) {
+                ArrayList<Integer> al=new ArrayList<Integer>();
+                al.add(i);
+                alal.add(al);
+            }
+            return alal;
+        }
+        
+        ArrayList<ArrayList<Integer>> alal_a=combine(n-1,k);
+        ArrayList<ArrayList<Integer>> alal_b=combine(n-1,k-1);
+        
+        alal.addAll(alal_a);
+        
+        for(ArrayList<Integer> al:alal_b) {
+        	al.add(n);
+        }
+        alal.addAll(alal_b);
+        
+        return alal;
+    }
+	
+//////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: add binary
+public static String addBinary(String a, String b) {
+		// Start typing your Java solution below
+		// DO NOT write main() function
+		StringBuffer sb = new StringBuffer();
+		int lena = a.length();
+		int lenb = b.length();
+
+		if (lena < lenb) {
+			String tmp = a;
+			a = b;
+			b = tmp;
+			
+			int t;
+			t=lena;
+			lena=lenb;
+			lenb=t;
+			
+		}
+
+		int carry = 0;
+
+		for (int i = 1; i <= lena; i++) {
+			if (i <= lenb) {
+				int tmp = (a.charAt(lena - i) - '0')
+						+ (b.charAt(lenb - i) - '0') + carry;
+				if (tmp > 1) {
+					char c=(char) (tmp%2+'0');
+					sb.append(c);
+					carry = 1;
+				} else {
+					char c=(char) (tmp%2+'0');
+					sb.append(c);
+					carry = 0;
+				}
+			} else {
+				int tmp = (a.charAt(lena - i) - '0') + carry;
+				if (tmp > 1) {
+					char c=(char) (tmp%2+'0');
+					sb.append(c);
+					carry = 1;
+				} else {
+					char c=(char) (tmp%2+'0');
+					sb.append(c);
+					carry = 0;
+				}
+			}
+		}
+
+		if (carry > 0) {
+			sb.append('1');
+		}
+		
+		return sb.reverse().toString();
+
+	}
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Anagrams
+    public static ArrayList<String> anagrams(String[] strs) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	//HashSet<char[]> set=new HashSet<char[]>();
+        HashMap<String,ArrayList<String>> map=new HashMap<String,ArrayList<String>>();
+        
+    	for(String s :strs) {
+            char [] ca=s.toCharArray();
+            Arrays.sort(ca);
+            String s1=new String(ca);
+            //System.out.println(ca);
+            if(map.containsKey(s1)) {
+            	map.get(s1).add(s);
+            	//System.out.println("s");
+            }else{
+            	ArrayList<String> al=new ArrayList<String>();
+            	al.add(s);
+            	map.put(s1,al );
+            	//System.out.println(s);
+            }
+        }
+    	
+    	ArrayList<String> alf=new ArrayList<String>();
+    	for(String s1: map.keySet()) {
+    		ArrayList<String> al=map.get(s1);
+    		if(al.size()>1) {
+    			alf.addAll(al);
+    		}
+    	}
+    	
+    	return alf;
+    }
+	
+//////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: remove elements
+    public static int removeElement(int[] A, int elem) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        int i=0;
+    	int j=A.length-1;
+    	
+    	while(A[j]==elem) {
+			A[j]=-1;
+			j--;
+		}
+    	for(i=0;i<j;i++){
+    		if(A[i]==elem) {
+    			A[i]=A[j];
+    			A[j]=-1;
+    			j--;
+    		}
+        	while(A[j]==elem) {
+    			A[j]=-1;
+    			j--;
+    		}
+    	}
+    	
+    	return j+1;
+    		
+        
+    }
+//////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: swap nodes in pairs
+        public static ListNode swapPairs(ListNode head) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        
+    	if(head==null) return null;
+    	if(head.next==null) return head;
+        
+    	ListNode prev=head;
+    	ListNode cur=head.next;
+    	ListNode next=head.next.next;
+    	
+    	head=cur;
+    	cur.next=prev;
+    	prev.next=next;
+
+    	while(next!=null&&next.next!=null) {
+        	prev=cur;
+        	cur=cur.next;
+        	ListNode old=cur;
+        	
+    		cur=cur.next.next;
+    		prev=prev.next.next;
+    		next=next.next.next;
+    		
+    		old.next=cur;
+    		cur.next=prev;
+    		prev.next=next;
+    	}
+    	return head;  
+    }
+///////////////////////////////////////////////////////////////////////////////////////
+//leetcode merge k-sorted lists (linkedlists)
+package Solution;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Set;
+import java.util.Stack;
+import java.util.TreeMap;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
+
+public class Solution {
+
+	    public ListNode mergeKLists(ArrayList<ListNode> lists) {
+		// Start typing your Java solution below
+		// DO NOT write main() function
+		if(lists==null) return null;
+        int len = lists.size();
+        if(len==0) return null;
+        
+        int count = len;
+        
+		ListNode[] cur = new ListNode[len];
+        for(int i=0;i<len;i++){
+            if(lists.get(i)==null) {
+                cur[i]=null;
+                count--;
+            }else{
+                cur[i]=lists.get(i);
+            }
+        }
+
+		int index = -1;
+		int min = Integer.MAX_VALUE;
+
+		ListNode li=null,pt=null;
+		int flag=0;
+		
+		while (count > 0) {
+			for (int i = 0; i < len; i++) {
+				if (cur[i] != null && cur[i].val < min) {
+					min = cur[i].val;
+					index = i;
+				}
+			}
+            
+            min=Integer.MAX_VALUE;
+			
+			if(flag==0) {
+                if(index!=-1) {
+				    li=cur[index];
+				    pt=li;
+				    flag=1;
+                }else{
+                    return li;
+                }
+			}else{
+				pt.next=cur[index];
+				pt=pt.next;
+			}	
+			cur[index] = cur[index].next;
+			if(cur[index]==null) {
+				count--;
+			}
+		}
+		return li;
+	}
+	
+	
+
+	public static void main(String[] args) {
+		ArrayList<ListNode> al=new ArrayList<ListNode> ();
+		ListNode ln0=new ListNode(2);
+		ListNode ln01=new ListNode(11);
+		
+		ln0.next=ln01;
+		
+		ListNode ln1=new ListNode(5);
+		ListNode ln11=new ListNode(7);
+		
+		ln1.next=ln11;
+		
+		ListNode ln2=new ListNode(3);
+		ListNode ln21=new ListNode(6);
+		ListNode ln22=new ListNode(9);
+		
+		ln2.next=ln21;
+		ln21.next=ln22;
+		al.add(ln0);
+		al.add(ln1);
+		al.add(ln2);
+		
+		ListNode ln=mergeKLists(al);
+		
+		while(ln!=null) {
+			System.out.println(ln.data);
+			ln=ln.next;
+		}
+		
+
+	}
+
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: word ladder(naive wrong)
+package Solution;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Queue;
+import java.util.Random;
+import java.util.Set;
+import java.util.Stack;
+import java.util.TreeMap;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
+
+public class Solution {
+
+	HashSet<String> visited=new HashSet<String> ();
+	
+    public int ladderLength(String start, String end, HashSet<String> dict) {
+    	
+    	visited.add(start);
+    	Queue<String> queue = new LinkedList<String>();
+    	int distance=0;
+    	queue.offer(start);
+    	int count=1;
+    	int cur=0;
+    	while(queue.peek()!=null) {
+    		String s=queue.poll();
+    		count--;
+
+    		if(s.equals(end)) {
+    			return distance+1;
+    		}
+    		
+    		for(int i=0; i< start.length(); i++) {
+    			for(int j=0; j<26; j++) {
+    				char c=(char) ('a'+j);
+    				String str=s.substring(0, i)+c+s.substring(i+1);
+    				if(dict.contains(str) && !visited.contains(str)) {
+    					visited.add(str);
+    					queue.offer(str);
+    					cur++;
+    				}
+    			}
+    		}
+    		
+    		if(count==0) {
+    			distance++;
+    			count=cur;
+    			cur=0;
+    		}
+    	}
+    	
+    	return 0;
+        
+    }
+
+	public static void main(String[] args) {
+		String str="a";
+		String sub=str.substring(0,0);
+		String sub1=str.substring(1);
+		
+		System.out.println(sub+'c'+sub1);
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//Amazon: reverse linkedlist
+	public static ListNode reverseLinkedList(ListNode root) {
+		if(root==null || root.next==null) return root;
+		
+		ListNode prev=root; 
+		ListNode cur=root.next;
+		ListNode next=root.next.next;
+		
+		prev.next=null;
+		cur.next=prev;
+		
+		while(next!=null) {
+			prev=cur;
+			cur=next;
+			next=next.next;
+			
+			cur.next=prev;
+			
+		}
+		
+		return cur;
+	}
+	
+	
+////////////////////////////////////////////////////////////////////////////////////////////
+//Amazon lowest common ancestor for binary search tree
+	public static TreeNode lowestCommonAncestor(TreeNode root, TreeNode n1, TreeNode n2) {
+		if(root==null) return null;
+		if(n1==null) return n2;
+		if(n2==null) return n1;
+		
+//		if(n1.val==root.val) {
+//			return n1;
+//		}
+//		if(n2.val==root.val) {
+//			return n2;
+//		}
+		
+		if(n1.val<root.val && n2.val<root.val) {
+			return lowestCommonAncestor(root.left, n1,n2);
+		}else if(n1.val>root.val && n2.val>root.val) {
+			return lowestCommonAncestor(root.right, n1,n2);
+		}else{
+			if(contains(root,n1) && contains(root,n2)){
+				return root;
+			}else{
+				return null;
+			}
+		}
+	}
+	
+	
+	public static boolean contains(TreeNode root, TreeNode nd) {
+		if(nd==null) return true;
+		if(root==null) return false;
+		if(nd.val<root.val) {
+			return contains(root.left, nd);
+		}else if(nd.val>root.val) {
+			return contains(root.right, nd);
+		}else{
+			return true;
+		}
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////
+//Amazon: 2. Delete all characters present in string \A1\AES2\A1\AF from string \A1\AES1\A1\AF. 
+	public static String delete(String s1, String s2) {
+		if(s1==null||s1=="") return s1;
+		if(s2==null||s2=="") return s1;
+		
+		HashSet<Character> set=new HashSet<Character> ();
+		for(int i=0; i<s2.length();i++) {
+			if(!set.contains(s2.charAt(i))) {
+				set.add(s2.charAt(i));
+			}
+		}
+		
+		StringBuffer sb=new StringBuffer();
+		for(int i=0;i<s1.length();i++) {
+			if(!set.contains(s1.charAt(i))) {
+				sb.append(s1.charAt(i));
+			}
+		}
+		
+		return sb.toString();
+		
+	}
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//amazon k-closest points to origin
+public class Point{
+		int x;
+		int y;
+		Point(int a, int b){
+			x=a;
+			y=b;
+		}
+		
+	}
+	
+	public static Point[] kclosest(Point[] pts, int k) {
+		int len=pts.length;
+		Point[] p= new Point[k];
+		int max=0;
+		int index=0;
+		for(int i=0;i<len; i++) {
+			if(i<k) {
+				p[i]=pts[i];
+				if(pts[i].x*pts[i].x + pts[i].y*pts[i].y>max) {
+					max=pts[i].x*pts[i].x + pts[i].y*pts[i].y;
+					index=i;
+				}
+			}else if(pts[i].x*pts[i].x + pts[i].y*pts[i].y<max){
+				p[index].x=pts[i].x;
+				p[index].y=pts[i].y;
+				max=pts[i].x*pts[i].x + pts[i].y*pts[i].y;
+				for(int j=0; j<k; j++) {
+					if(p[j].x * p[j].x+p[j].y*p[j].y > max) {
+						index=j;
+						max=p[j].x * p[j].x+p[j].y*p[j].y;
+					}
+				}
+			}
+		}
+		
+		return p;
+	}
+	
+	
+///////////////////////////////////////////////////////////////////////////////////////
+//two ways for maxheap, minheap -- priorityQueue
+	public class MyComparator implements Comparator<Integer>{
+	    public int compare( Integer x, Integer y ){
+	        return y - x;
+	    }
+	};
+	
+	PriorityQueue<Integer> pqmin= new PriorityQueue<Integer>(k);
+	PriorityQueue<Integer> pqmax=new PriorityQueue<Integer>(k, new MyComparator());
+	
+	////////////////////////////////////
+	
+	PriorityQueue<Integer> pqmin= new PriorityQueue<Integer>(k);
+	PriorityQueue<Integer> pqmax=new PriorityQueue<Integer>(k, new MyComparator(){ public int compare(Integer o1, Integer o2){return o2 - o1;} } );
+	
+	
+////////////////////////////////////////////////////////////////////////////////////////////////
+//Amazon construct min Array from another array
+	public static int[] constructArray(int[] A, int k){
+		int len=A.length;
+		int [] B=new int[len-k];
+		PriorityQueue<Integer> minheap=new PriorityQueue<Integer>(k);
+		for(int i=0;i<=k;i++) {
+			minheap.add(A[i]);
+		}
+		B[0]=minheap.peek();
+		
+		for(int j=1;j<len-k;j++) {
+			minheap.remove(A[j-1]);
+			minheap.add(A[k+j]);
+			B[j]=minheap.peek();
+		}
+		
+		return B;
+	}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//Kabam boggle solver
+package Solution;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+
+public class Solution {
+
+	public static ArrayList<String> boggleSolver(char[][] board) {
+		if(board==null) return null;
+		int rows=board.length;
+		int cols=board[0].length;
+				
+		ArrayList<String> al=new ArrayList<String>();
+		
+		if(rows<2&&cols<2) return al;
+		
+		for(int i=2;i<=rows*cols;i++) {
+			for(int m=0;m<rows;m++) {
+				for(int n=0;n<cols;n++) {
+					StringBuffer sb=new StringBuffer();
+					boolean [][]visited=new boolean[rows][cols];
+					
+					boggleHelper(m,n, board,i,al, sb, visited);
+				}
+			}
+			
+		}
+		
+		return al;
+	}
+	
+	
+	
+	public static void boggleHelper(int m, int n, char[][] board, int k, ArrayList<String> al, StringBuffer sb, boolean[][]visited) {
+		if(visited[m][n]==true) return;
+		
+		int len=sb.length();
+		if(len==k-1) {
+			sb.append(board[m][n]);
+			al.add(sb.toString());
+			return;
+		}
+		int rows=board.length;
+		int cols=board.length;
+		
+		if(m+1<rows) {
+			 sb.append(board[m][n]);
+			 visited[m][n]=true;
+			 boggleHelper(m+1, n, board, k, al, sb,visited);
+			 sb.setLength(len);
+		}
+		
+		
+		if(n+1<cols) {
+			 sb.append(board[m][n]);
+			 visited[m][n]=true;
+			 boggleHelper(m, n+1, board, k, al, sb,visited);
+			 sb.setLength(len);
+		}
+		
+		
+		if(m-1>=0) {
+			 sb.append(board[m][n]);
+			 visited[m][n]=true;
+			 boggleHelper(m-1, n, board, k, al, sb,visited);
+			 sb.setLength(len);
+		}
+		
+		if(n-1>=0) {
+			 sb.append(board[m][n]);
+			 visited[m][n]=true;
+			 boggleHelper(m, n-1, board, k, al, sb,visited);
+			 sb.setLength(len);
+		}
+		
+		
+	}
+	
+
+	public static void main(String args[]) {
+		char[][] board={{'a','b','c'},{'d','e','f'},{'g','h','i'}};
+		
+		System.out.println(boggleSolver(board));
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: valid number
+
+public class Solution {
+
+    public static boolean isNumber(String s1) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+         
+         
+        if(s1==null || s1.equals("")) return false;
+        
+        String s=s1.trim();
+        
+        if(s.equals("")) return false;
+        
+        int cnte=0;
+        int cntd=0;
+        int len=s.length();
+        for(int i=0; i<len;i++) {
+            
+            if(!((s.charAt(i)<='9'&&s.charAt(i)>='0')||s.charAt(i)=='+'||s.charAt(i)=='-'||s.charAt(i)=='.'||s.charAt(i)=='e')) return false;
+            
+            if(s.charAt(i)=='+' || s.charAt(i)=='-') {
+            	
+            	
+            	if(i==len-1) return false;
+            	//if(i>0&&s.charAt(i-1)=='.') return false;
+            	if(i>0&&s.charAt(i-1)!='e') return false;
+            	if(i==0&&len==1) return false;
+            }
+            
+            if(s.charAt(i)=='e') {
+            	if(i==len-1) return false;
+            	if(i>0&& (s.charAt(i-1)=='+'||s.charAt(i-1)=='-')) return false;
+            	if(i==0) return false;
+            	
+            	
+                if(cnte==1) return false;
+                cnte++;
+            }
+            
+            if(s.charAt(i)=='.') {
+                if(i>0&&i==len-1 && (s.charAt(i-1)=='+'|| s.charAt(i-1)=='-')) return false;
+                if(len==1) return false;
+            	if(cnte==1) return false;
+            	
+            	
+                if(cntd==1) return false;
+                cntd++;
+            }
+            
+        }
+        return true;   
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: climbing stairs
+public class Solution {
+    HashMap<Integer, Integer> map=new HashMap<Integer, Integer>();
+    
+    public int climbStairs(int n) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        
+    	
+    	
+    	if(n==0||n==1) return 1;
+    	
+        
+        
+    	if(map.containsKey(n)) {
+    		return map.get(n);
+    	}else{
+    		int m=climbStairs(n-1) +climbStairs(n-2);
+    		map.put(n, m);
+    		return m;
+    	}
+        
+    }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: set matrix zeros
+    public void setZeroes(int[][] matrix) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        HashSet<Integer> rows=new HashSet<Integer>();
+    	HashSet<Integer> cols=new HashSet<Integer>();
+    	
+    	
+    	// Start typing your Java solution below
+        // DO NOT write main() function
+    	
+    	for(int i=0;i<matrix.length;i++) {
+    		for(int j=0;j<matrix[0].length;j++) {
+    			if(matrix[i][j]==0) {
+    				if(!rows.contains(i)) rows.add(i);
+    				if(!cols.contains(j)) cols.add(j);
+    			}
+    		}
+    	}
+    	
+    	
+    	for(int i=0; i< matrix.length; i++){
+    		if(rows.contains(i)) {
+    			for(int j=0; j<matrix[0].length; j++) matrix[i][j]=0;
+    		}
+    	}
+    	
+    	for(int j=0; j< matrix[0].length; j++){
+    		if(cols.contains(j)) {
+    			for(int i=0; i<matrix.length; i++) matrix[i][j]=0;
+    		}
+    	}
+    }
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: merge sorted arrays
+    public void merge(int A[], int m, int B[], int n) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        
+        
+        int pA=m-1;
+    	int pB=n-1;
+    	
+    	for(int i=m+n-1; i>=0; i--){
+    		if(pA<0) {
+    			A[i]=B[pB];
+                pB--;
+    		}else if(pB<0){
+    			return;
+    		}else if(A[pA]>B[pB]){
+    			A[i]=A[pA];
+    			pA--;
+    		}else{
+    			A[i]=B[pB];
+    			pB--;
+    		}
+    	}
+    }
+
+/////////////////////////////////////////////////////////////////////////////
+//leetcode: Validate binary search tree(BST)
+    public boolean isValidBST(TreeNode root) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        if(root==null) return true;
+        boolean result=true;
+        
+        if(isValidBST(root.left) && (isValidBST(root.right))){
+        	if(root.left!=null) result=result && (maxBST(root.left)<root.val);
+        	if(root.right!=null) result=result && (minBST(root.right)>root.val);
+        	return result;
+        }
+        
+        return false;
+    	
+    	
+    	
+    }
+
+    public static int maxBST(TreeNode root) {
+    	if(root.right!=null) return maxBST(root.right);
+    	else return root.val;	
+    }
+    
+    public static int minBST(TreeNode root) {
+    	if(root.left!=null) return minBST(root.left);
+    	else return root.val;	
+    }
+	
+//////////////////////////////////////////////////////////////////////////////////
+//leetcode: valid palindrome
+
+    public boolean isPalindrome(String s) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	s=s.trim().toLowerCase();
+    	int len=s.length();
+    	int left=0; int right=len-1;
+    	while(left<right) {
+    		while(!(s.charAt(left)<='z'&&s.charAt(left)>='a')){
+    			left++;
+    			if(left==right) return true;
+    		}
+    		while(!(s.charAt(right)<='z'&&s.charAt(right)>='a')){
+    			right--;
+    			if(left==right) return true;
+    		}
+    		if(s.charAt(left)!=s.charAt(right)) {
+    			return false;
+    		}
+    		left++;
+    		right--;
+    	}
+    	
+    	return true;
+    }
+	
+////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: word ladder (using two queues)
+
+public class Solution {
+
+	public static HashSet<String> visited = new HashSet<String>();
+
+	public static int ladderLength(String start, String end, HashSet<String> dict) {
+
+		visited.add(start);
+		Queue<String> queue1 = new LinkedList<String>();
+		int distance = 1;
+		queue1.offer(start);
+
+		
+
+		while (true) {
+			Queue<String> queue2 = new LinkedList<String>();
+			
+			while (queue1.peek() != null) {
+				String s = queue1.poll();
+
+				if (s.equals(end)) {
+					return distance;
+				}
+
+				for (int i = 0; i < start.length(); i++) {
+					for (int j = 0; j < 26; j++) {
+						char c = (char) ('a' + j);
+						String str = s.substring(0, i) + c + s.substring(i + 1);
+						if (dict.contains(str) && !visited.contains(str)) {
+							visited.add(str);
+							queue2.offer(str);
+						}
+					}
+				}
+			}
+			
+			if(queue2.isEmpty()) {
+				return 0;
+			}
+			queue1=queue2;
+			distance++;
+		}
+	}
+
+	public static void main(String args[]) {
+		HashSet<String> dict=new HashSet<String>();
+		dict.add("hot");
+		dict.add("cog");
+		dict.add("dog");
+		//dict.add("tot");
+		//dict.add("hog");
+		//dict.add("hop");
+		dict.add("pot");
+		dict.add("dot");
+		
+		System.out.println(ladderLength("hot","dog",dict));
+		
+	}
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: integer to roman
+    public static int romanToInt(String s) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        HashMap<String,Integer> map=new HashMap<String, Integer>();
+        int result=0;
+        
+        
+        map.put("M", 1000);
+        map.put("CM", 900);
+        map.put("D", 500);
+        map.put("CD", 400);
+        map.put("C", 100);
+        map.put("XC", 90);
+        map.put("L", 50);
+        map.put("XL", 40);
+        map.put("X", 10);
+        map.put("IX", 9);
+        map.put("V", 5);
+        map.put("IV", 4);
+        map.put("I", 1);
+        
+        for(int i=0; i<s.length();){
+        	int val=0;
+        	int len=0;
+        	for(int j=1;j<3&&i+j<=s.length();j++) {
+        		
+        		if(map.containsKey(s.substring(i,i+j))) {
+        			val=map.get(s.substring(i,i+j));
+        			len=j;
+        		}
+        	}
+        	
+        	i=i+len;
+        	
+        	result+=val;
+        }
+        
+        return result;
+        
+        
+    }
+	
+//////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: permutations (permutation of an integer array)
+    public static ArrayList<ArrayList<Integer>> permute(int[] num) {
+    	ArrayList<ArrayList<Integer>> alal=new ArrayList<ArrayList<Integer>>();
+    	int len=num.length;
+    	
+    	alal=permuteHelper(num,len);
+    	
+    	return alal;
+    }
+    
+    
+    public static ArrayList<ArrayList<Integer>> permuteHelper(int[] num, int k) {
+    	ArrayList<ArrayList<Integer>> alal=new ArrayList<ArrayList<Integer>>();
+    	if(k==1) {
+    		ArrayList<Integer> al=new ArrayList<Integer>();
+    		al.add(num[0]);
+    		alal.add(al);
+    		return alal;
+    	}
+    	
+    	ArrayList<ArrayList<Integer>> alal_1=permuteHelper(num,k-1);
+    	
+    	for(ArrayList<Integer> al: alal_1) {
+    		for(int i=0; i<k; i++) {
+    			ArrayList<Integer> tmp=(ArrayList<Integer>) al.clone();
+    			tmp.add(i, num[k-1]);
+    			alal.add(tmp);
+        	}
+    	}
+    	
+    	return alal;
+    }
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Sqrt(x)
+    public static int sqrt(int x) {
+    	if(x==0 || x==1) return x;
+    	int head=0;
+    	int end=x;
+    	
+    	while(true){
+    		int y=(head+end)/2;
+    		if(y*y<=x && (y+1)*(y+1)>x) {
+    			return y;
+    		}else if(y*y>x) {
+    			end=y;
+    		}else{
+    			head=y;
+    		}
+    	}
+        
+    }
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Median of Two Sorted Arrays(problematic but good idea)
+    public static double findMedianSortedArrays(int A[], int B[]) {
+    	int m=A.length;
+    	int n=B.length;
+    	
+    	if((m+n)%2==0)  {
+    		double d1=(double)findkth(A,0,m, B, 0, n, (m+n)/2);
+    		System.out.print(d1);
+    		double d2=(double)findkth(A,0,m,B,0,n,(m+n)/2+1);
+    		System.out.println(d2);
+    		return (d1+d2)/2;
+    	}else{
+    		return (double)findkth(A,0,m,B,0,n,(m+n+1)/2);
+    	}
+    }
+    
+    public static int findkth(int A[], int a1, int a2, int B[], int b1, int b2, int k) {
+    	int la=a2-a1;
+    	int lb=b2-b1;
+    	
+    	if(la==0){
+    		return B[b1+k-1];
+    	}
+    	
+    	if(lb==0){
+    		return A[a1+k-1];
+    	}
+    	
+    	if(k==1) {
+    		if(A[a1]<B[b1]) return A[a1];
+    		else return B[b1];
+    	}
+    	
+    	if(k==la+lb){
+    		if(A[a2-1]>B[b2-1]) return A[a2-1];
+    		else return B[b2-1];
+    	}
+    	
+    	if(A[a1+ k*la/(la+lb)] <= B[b1+k*lb/(la+lb)]) {  		
+    		a1=a1+k*la/(la+lb);
+    		b2=b1+k*lb/(la+lb);
+    		k=k-k*la/(la+lb);
+    		return findkth(A,a1,a2,B,b1,b2,k);
+    	}else {
+    		b1=b1+k*lb/(la+lb);
+    		a2=a1+k*la/(la+lb);
+    		k=k-k*lb/(la+lb);
+    		return findkth(A,a1,a2,B,b1,b2,k);
+    	}		
+    }
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: reverse integer
+    public static int reverse(int x) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	int remain=x;
+    	int result=0;
+    	while(remain!=0) {
+    		int tmp=remain%10;
+    		result=result*10+tmp;
+    		remain=remain/10;
+    	}
+        
+    	return result;
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: regular expression matching
+	    public boolean isMatch(String s, String p) {
+	        if (s.length() == 0) {
+	            return checkEmpty(p);
+	        }
+	 
+	        if (p.length() == 0) {
+	            return false;
+	        }
+	 
+	        char c1 = s.charAt(0);
+	        char d1 = p.charAt(0), d2 = '0'; //any init value except '*'for d2 will do
+	 
+	        if (p.length()>1){
+	            d2 = p.charAt(1);
+	        }
+	 
+	        if (d2 == '*') {
+	            if (d1 == '.' || c1 == d1) {
+	                //fork here: 1. consume the character, and use the same pattern again.
+	                //2. keep the character, and skip 'd1*' pattern
+	                 
+	                //Here is also an opportunity to use DP, but the idea is the same
+	                return isMatch(s.substring(1), p) || isMatch(s, p.substring(2));
+	            }
+	            else {
+	                return isMatch(s, p.substring(2));
+	            }
+	        }
+	        else {
+	            if (d1 == '.' || c1 == d1) {
+	                return isMatch(s.substring(1), p.substring(1));
+	            }
+	            else {
+	                return false;
+	            }
+	        }
+	    }
+	    
+	 
+	    public boolean checkEmpty(String p) {
+	        if (p.length()%2 != 0) {
+	            return false;  
+	        }
+	 
+	        for (int i = 1; i < p.length(); i+=2) {
+	            if (p.charAt(i) != '*') {
+	                return false;
+	            }
+	        }
+	        return true;
+	    }
+		
+/////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Remove Duplicates from Sorted Array
+    public static int removeDuplicates(int[] A) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	int len=A.length;
+    	if(len==0) return 0;
+    	if(len==1) return 1;
+    	
+    	int last=A[0];
+    	int lastIndex=0;
+    	
+    	for(int i=1; i< A.length; i++) {
+    		if(A[i] != last) {
+    			last=A[i];
+    			if(lastIndex+1 != i) {
+    				A[lastIndex+1]=A[i];
+    				lastIndex++;
+    			}else{
+    				lastIndex++;
+    			}
+    		}
+    	}
+    	
+    	return lastIndex+1;
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: divide two integers(not good: recursion version)
+    public int divide(int dividend, int divisor) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+         if (divisor == Integer.MIN_VALUE) {
+            if (dividend == Integer.MIN_VALUE) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        
+        int sign=1;
+    	if((dividend>0 && divisor<0) || (dividend<0 && divisor>0)) {
+    		sign=-1;
+    	}
+    	if(dividend<0) dividend=-dividend;
+    	if(divisor<0) divisor=-divisor;
+    	
+    	if(divisor>dividend) return 0;
+    	if(divisor==dividend) return sign;
+    	
+    	int tmp=divisor;
+    	int i=1;
+    	
+    	while(tmp<<1 <dividend){
+    		tmp=tmp<<1;
+    		i=i<<1;
+    	}
+    	
+    	return sign*(i+divide(dividend-tmp, divisor));
+    }
+	
+////////////////////////////////////////////////////////////////////////////////////
+//leetcode: divide two integers(non recursion version) ---c++ version
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        long long a = abs((double)dividend);
+        long long b = abs((double)divisor);
+
+        long long ret = 0;
+        while (a >= b) {
+            long long c = b;
+            for (int i = 0; a >= c; ++i, c <<= 1) {
+                a -= c;
+                ret += 1 << i;
+            }
+        }
+
+        return ((dividend^divisor)>>31) ? (-ret) : (ret);
+    }
+};
+
+////////////////////////////////////////////////////////////////////////////////
+//leetcode: divide two integers(java version)
+ public int divide(int dividend, int divisor) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+         
+        int a = Math.abs(dividend);
+        int b = Math.abs(divisor);
+         
+        //b maybe Integer.MIN_VALUE
+ 
+        boolean neg = (dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0);
+        if (divisor == 0) {
+             
+            return Integer.MAX_VALUE;
+        }
+        if (divisor == Integer.MIN_VALUE) {
+            if (dividend == Integer.MIN_VALUE) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+        if (dividend == Integer.MIN_VALUE) {
+            if (neg) {
+                return -1 + divide(dividend + b, b);
+            }
+            else {
+                return 1 - divide(dividend + b, b);
+            }
+        }
+         
+        int product = b, result = 0;
+        while (a >= b) {
+            int q = 1;
+            while (a - product >= product) {
+                q = q << 1;
+                product = product << 1;
+            }
+            a = a - product;
+            product = b;
+            result += q;
+        }
+         
+        if (!neg) {
+            return result;
+        }
+        else {
+            return -result;
+        }
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////////	
+//leetcode  divide two integers(my java version)
+    public static int divide(int dividend, int divisor) {
+		// Start typing your Java solution below
+		// DO NOT write main() function
+		
+        int a = Math.abs(dividend);
+        int b = Math.abs(divisor);
+        
+		boolean neg = (dividend > 0 && divisor < 0) || (dividend < 0 && divisor > 0);
+		
+		if (divisor == Integer.MIN_VALUE) {
+            if (dividend == Integer.MIN_VALUE) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
+        }
+		
+        if (dividend == Integer.MIN_VALUE) {
+            if (neg) {
+                return -1 + divide(dividend + b, b);
+            }
+            else {
+                return 1 - divide(dividend + b, b);
+            }
+        }
+		
+				
+		int result=0;
+        dividend=a;
+        divisor=b;
+		
+		while (dividend >= divisor) {
+			int tmp = divisor;
+			int i = 1;
+			
+			while (tmp <= dividend-tmp) {
+				tmp = tmp<<1;
+				i= i<<1;
+			}
+			dividend-=tmp;
+			result+=i;	
+		}
+		
+		if(neg){
+			return -result;
+		}
+		return result;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: combination sum(idea: use recursion) problematic version
+    public ArrayList<ArrayList<Integer>> combinationSum(int[] candidates, int target) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	
+    	ArrayList<ArrayList<Integer>> alal=new ArrayList<ArrayList<Integer>>();
+    	
+    	int len=candidates.length;
+    	if(len==0) return alal;
+    	if(len==1) {
+    		if(target%candidates[0]==0){
+    			ArrayList<Integer> al=new ArrayList<Integer>();
+    			
+    			for(int i=0; i< target/candidates[0];i++) {
+    				al.add(candidates[0]);
+    			}
+    			alal.add(al);
+    		}
+    		return alal;
+    	}
+ 	
+    	for(int i=0; i<len; i++) {
+    		int[] candidates1=new int[len-1];
+    		
+    		for(int k=0, l=0; k<len; k++) {
+    			if(k!=i){
+    				candidates1[l]=candidates[i];
+    				l++;
+    			}
+    		}
+    		
+    		for(int j=0; j<=target/candidates[i];j++){
+    			ArrayList<ArrayList<Integer>>alal1=combinationSum(candidates1, target-j*candidates[i]);
+    			
+    			for(ArrayList<Integer> al1: alal1) {
+    				for(int m=0; m<j; m++) {
+    					al1.add(candidates[i]);
+    				}
+    			}
+    			
+    			alal.addAll(alal1);
+    		}		
+    	}
+    	
+    	return alal;
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//CC150 17.14 find the sentence cut (naive no dynamic programming)
+	public static int parseWord(int start, int end, String sentence, HashSet<String> dict) {
+		if(end>=sentence.length()) {
+			return end-start;
+		}
+		
+		String word=sentence.substring(start,end+1);
+		int bestExact=parseWord(end+1,end+1,sentence,dict);
+		if(!dict.contains(word)) {
+			bestExact+=end-start;
+		}
+		
+		int bestExtend=parseWord(start,end+1, sentence,dict);
+		
+		return Math.min(bestExact, bestExtend);
+	}
+	
+	
+	
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//tree inorder traversal
+public class Solution {
+	public static void inorder(TreeNode root) {
+		if (root == null)
+			return;
+		TreeNode p1 = root;
+		Stack<TreeNode> st = new Stack<TreeNode>();
+
+		st.push(p1);
+		while (!st.isEmpty()) {
+			while (p1.left != null) {
+				st.push(p1.left);
+				p1 = p1.left;
+			}
+
+			TreeNode p2 = st.pop();
+			System.out.println(p2.val);
+			
+			if (p2.right != null) {
+				p1 = p2.right;
+				st.push(p1);
+			}		
+		}
+		
+	}
+
+	public static void main(String args[]) throws IOException {
+		TreeNode root=TreeNode.buildTree();
+		inorder(root);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//tree preorder pre-order traversal
+package Solution;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Stack;
+
+public class Solution {
+	public static void preOrder(TreeNode root) {
+		if (root == null)
+			return;
+		TreeNode p1 = root;
+		
+		Stack<TreeNode> st = new Stack<TreeNode>();
+		
+		System.out.println(p1.val);
+		st.push(p1);
+		while (!st.isEmpty()) {
+			while (p1.left != null) {
+				System.out.println(p1.left.val);
+				st.push(p1.left);
+				p1 = p1.left;
+			}
+
+			TreeNode p2 = st.pop();
+			
+			
+			if (p2.right != null) {
+				
+				p1 = p2.right;
+				System.out.println(p1.val);
+				st.push(p1);
+				
+			}		
+		}
+		
+	}
+
+	public static void main(String args[]) throws IOException {
+		TreeNode root=TreeNode.buildTree();
+		preOrder(root);
+	}
+}
+/////////////////////////////////////////////////////////////////////////////////////
+//tree post-order postorder traversal
+package Solution;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Stack;
+
+public class Solution {
+	public static void postOrder(TreeNode root) {
+		if (root == null)
+			return;
+		TreeNode p1 = root;
+		
+		Stack<TreeNode> st = new Stack<TreeNode>();
+		
+		Stack<TreeNode> tmpSt=new Stack<TreeNode>();
+		
+		//System.out.println(p1.val);
+		tmpSt.push(p1);
+		st.push(p1);
+		while (!st.isEmpty()) {
+			while (p1.right != null) {
+				//System.out.println(p1.left.val);
+				tmpSt.push(p1.right);
+				st.push(p1.right);
+				p1 = p1.right;
+			}
+
+			TreeNode p2 = st.pop();
+			
+			
+			if (p2.left != null) {
+				
+				//System.out.println(p2.right.val);
+				p1 = p2.left;
+				tmpSt.push(p1);
+				st.push(p1);
+			}		
+		}
+		
+		while(!tmpSt.isEmpty()) {
+			System.out.println(tmpSt.pop().val);
+		}
+		
+		
+	}
+
+	public static void main(String args[]) throws IOException {
+		TreeNode root=TreeNode.buildTree();
+		postOrder(root);
+	}
+}
+/////////////////////////////////////////////////////////////////////////////////
+//layer by layer traversal
+package Solution;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
+
+public class Solution {
+	public static void layer(TreeNode root) {
+		if (root == null)
+			return;
+		TreeNode p1 = root;
+		
+		Queue<TreeNode> qu=new LinkedList<TreeNode>();
+		System.out.println(p1.val);
+		qu.offer(p1);
+		
+		while(!qu.isEmpty()) {
+			TreeNode tmp=qu.poll();
+			if(tmp.left!=null) {
+				System.out.println(tmp.left.val);
+				qu.offer(tmp.left);
+			}
+			if(tmp.right!=null) {
+				System.out.println(tmp.right.val);
+				qu.offer(tmp.right);
+			}
+		}
+	}
+
+	public static void main(String args[]) throws IOException {
+		TreeNode root=TreeNode.buildTree();
+		layer(root);
+	}
+}
+////////////////////////////////////////////////////////////////////////////////////////
+//implement a queue
+package Solution;
+
+import java.util.LinkedList;
+
+public class myQueue<T> {
+	protected LinkedList<T> list;
+	
+	public myQueue() {
+		list=new LinkedList<T>();
+	}
+	
+	public void offer(T element) {
+		list.add(element);
+	}
+	
+	public T poll() {
+		return list.removeLast();
+	}
+	
+	public boolean isEmpty(){
+		return list.isEmpty();
+	}
+	
+	public T peek() {
+		return list.peekLast();
+	}
+	
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Flatten Binary Tree to Linked List
+    public static void flatten(TreeNode root) {
+    	if(root==null || (root.left==null&&root.right==null)) return;
+    	
+    	TreeNode n1=root.left;
+    	TreeNode n2=root.right; 
+    	TreeNode tmp=null;
+    	
+    	if(n1 != null) {
+    		flatten(n1);
+    		root.right=n1;
+    		n1.left=root;
+    		tmp=n1;
+    		while(tmp.right !=null) {
+    			tmp=tmp.right;
+    		}
+    	}
+    	
+    	if(n2 != null) {
+    		flatten(n2);
+    		
+    		if(tmp!=null){
+    			tmp.right=n2;
+    			n2.left=tmp;
+    		}else{
+    			root.right=n2;
+    			n2.left=root;
+    		}
+    	}
+    }
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Path Sum
+
+public boolean hasPathSum(TreeNode root, int sum) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        if(root==null) return false;
+        
+        if(root.val==sum && (root.left==null && root.right==null)) return true;
+    	boolean result=false;
+    	if(root.left!=null) {
+    		result=result || hasPathSum(root.left, sum-root.val);
+    	}
+    	if(root.right!=null) {
+    		result=result || hasPathSum(root.right, sum-root.val);
+    	}
+    	
+    	return result;
+    }
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Convert Sorted List to Binary Search Tree
+
+        public TreeNode sortedListToBST(ListNode head) {
+        if(head==null) return null;
+        if(head.next == null) return new TreeNode(head.val);
+        
+        ListNode prev=null;
+        ListNode slow=head;
+        ListNode fast=head;
+        
+        while(fast!=null&&fast.next!=null) {
+        	prev=slow;
+        	slow=slow.next;
+        	fast=fast.next.next;
+        }
+        
+        TreeNode root=new TreeNode(slow.val);
+        
+        ListNode tmp=slow.next;
+        
+    	prev.next=null;
+    	TreeNode left=sortedListToBST(head);
+    	TreeNode right=sortedListToBST(tmp);
+    	
+    	root.left=left;
+    	root.right=right;
+    	return root;
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//binary tree reverse traversal
+	public static void reverseTraversal(TreeNode root) {
+		if (root == null)
+			return;
+		
+		Stack<TreeNode> st = new Stack<TreeNode>();
+
+		TreeNode p1 = root;
+		
+
+		while (true) {			
+			while (p1 != null) {
+				st.push(p1);
+				p1 = p1.right;
+			}
+			
+			if(st.isEmpty()) return;
+			TreeNode p2 = st.pop();
+			System.out.println(p2.val);
+
+			p1 = p2.left;
+		}
+	}
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+//facebook adjacent binary
+public class Solution {
+	
+	
+	public static int binaryToGray(int num) {
+		return (num >> 1) ^ num;
+	}
+
+	public static void main(String args[]) throws IOException {
+		for(int i=0; i< 1024; i++) {
+			System.out.println(binaryToGray(i));
+		}
+
+	}
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//facebook interview
+public static ArrayList<Character> maxRep(String s) {
+
+        if (s == null){
+            return null;
+        }
+        ArrayList<Character> al = new ArrayList<Character>();
+
+        int len = s.length();
+        if (len == 0) {
+            return al;
+        }
+
+        int max = 1;
+        int count = 1;
+
+        for (int i = 1; i < len; i++) {
+            if (s.charAt(i) == ' ' || s.charAt(i) != s.charAt(i - 1)) {
+                if (count < max) {
+                    count=1;
+                    continue;
+                } else if (count > max) {
+                    max=count;
+                    al = new ArrayList<Character>();
+                    al.add(s.charAt(i - 1));
+                    count=1;
+                } else if (s.charAt(i - 1) != ' '){
+                    al.add(s.charAt(i - 1));
+                    count = 1;
+                }
+            }else{
+                count++;
+            }
+            
+        }
+        
+        
+        if(count > max) {
+            al = new ArrayList<Character>();
+            al.add(s.charAt(len-1));
+        }
+        if(count == max) {
+            if(s.charAt(len-1)!=' ') {
+                al.add(s.charAt(len-1));
+            }
+        }    
+        
+        return al;
+    }
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode : Restore IP Addresses
+    public static ArrayList<String> restoreIpAddresses(String s) {
+
+        if(s==null) return null;
+        int len=s.length();
+        ArrayList<String> al=new ArrayList<String>();
+        
+        if(len<4||len>12) return al;
+        
+        StringBuffer part= new StringBuffer();
+        dfs(s, al, part, 0, 1);
+        
+        return al;
+        
+        
+    }
+    
+    
+    public static void dfs(String s, ArrayList<String>al, StringBuffer part, int start, int num) {
+    	int len=s.length();
+        
+    	if(start>=len) return;
+        
+    	Long remain=Long.parseLong(s.substring(start));
+        
+        if(num==4 && remain<256) {
+            part.append('.'+s.substring(start));
+            al.add(part.toString());
+            
+        } 
+        
+        
+        if(num<4) {
+            for(int i=1; i<4 && i<=len-start;i++) {
+                int tmp=Integer.parseInt(s.substring(start,start+i));
+                if(tmp<256) {
+                	
+                	int size=part.length();
+                	
+                	if(num!=1) {
+                		part.append('.');
+                	}
+                	
+                    part.append(s.substring(start,start+i));
+                                       
+                    dfs(s,al,part,start+i,num+1);
+                 
+                    part.setLength(size);
+                    
+                }
+            }
+        }
+        
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode : Unique paths
+
+	public static int uniquePaths(int m, int n) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+     
+		int [][] P=new int[m][n];
+		for(int i=0;i<m; i++) {
+			P[i][0]=1;
+		}
+		
+		for(int i=0;i<n;i++) {
+			P[0][i]=1;
+		}
+		
+		for(int i=1; i<m; i++) {
+			for(int j=1; j<n; j++) {
+				P[i][j]=P[i-1][j]+P[i][j-1];
+			}
+		}
+		
+		return P[m-1][n-1];
+		
+    }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Unique paths 2
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	int rows=obstacleGrid.length;
+    	int cols=obstacleGrid[0].length;
+    	
+    	int [][] P= new int[rows][cols];
+    	for(int i=0; i< rows; i++) {
+    		if(obstacleGrid[i][0]==1){
+    			break;
+    		}
+    		P[i][0]=1;
+    	}
+    	
+    	for(int i=0; i< cols; i++) {
+    		if(obstacleGrid[0][i]==1){
+    			break;
+    		}
+    		P[0][i]=1;
+    	}
+    	
+    	for(int i=1;i<rows; i++) {
+    		for(int j=1; j<cols; j++) {
+    			if(obstacleGrid[i][j]==1){
+        			P[i][j]=0;
+        		}else{
+        			P[i][j]=P[i-1][j]+P[i][j-1];
+        		}
+    		}
+    	}
+    	
+    	return P[rows-1][cols-1];
+    	
+    }
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Maximum Subarray
+    public int maxSubArray(int[] A) {
+	        // Start typing your Java solution below
+	        // DO NOT write main() function
+		 int max=Integer.MIN_VALUE;
+		 int len=A.length;
+		 int sum=0;
+		 
+		 for(int i=0; i<len; i++) {
+			 sum+=A[i];
+			 if(sum>max) max=sum;
+			 if(sum<0) sum=0;
+		 }
+		 
+		 return max;
+	 }
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: N Queens
+	public static ArrayList<String[]> solveNQueens(int n) {
+		// Start typing your Java solution below
+		// DO NOT write main() function
+		ArrayList<String[]> al=new ArrayList<String[]>();
+		ArrayList<String> sa=new ArrayList<String>();
+		
+		dfs(al,sa,n,1);
+		
+		return al;
+	}
+
+	public static void dfs(ArrayList<String[]> al, ArrayList<String> sa, int n, int row) {
+		if (row == n) {
+			for (int i = 0; i < n; i++) {
+				if (checkValid(sa, i)) {
+					String s = Qi(i, n);
+					sa.add(s);
+					al.add(sa.toArray(new String[sa.size()]));
+					return;
+				}
+			}
+		} else {
+
+			for (int i = 0; i < n; i++) {
+				if (checkValid(sa, i)) {
+					String s = Qi(i, n);
+					ArrayList<String> sa1=(ArrayList<String>) sa.clone();
+					sa1.add(s);
+					dfs(al, sa1, n, row + 1);
+				}
+			}
+		}
+	}
+
+	public static boolean checkValid(ArrayList<String> sa, int n) {
+		if(sa.isEmpty()) return true;
+		
+		for(String s: sa) {
+			if(s.charAt(n)=='Q') return false;
+		}
+		
+		for(int i=1;sa.size()-i>=0 && n-i>=0; i++) {
+			if(sa.get(sa.size()-i).charAt(n-i)=='Q') return false;
+		}
+		
+		for(int i=1;sa.size()-i>=0 && n+i<sa.get(0).length(); i++) {
+			if(sa.get(sa.size()-i).charAt(n+i)=='Q') return false;
+		}		
+		return true;
+	}
+	
+	
+	public static String Qi(int i, int n) {
+		String s = "";
+		for (int j = 0; j < i; j++) {
+			s += '.';
+		}
+		s += 'Q';
+		for (int j = i + 1; j < n; j++) {
+			s += '.';
+		}
+		return s;
+	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Wildcard matching (small case passed, large time limit exceed)
+    public boolean isMatch(String s, String p) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	if(s==null) return p==null;
+    	if(p==null) return s==null;
+    	
+    	if(s.length()==0) return p.length()==0||allstar(p);
+    	if(p.length()==0) return s.length()==0;
+    	
+    	if(s.charAt(0)==p.charAt(0) || p.charAt(0)=='?'){
+    		return isMatch(s.substring(1),p.substring(1));
+    	}else if(p.charAt(0)=='*'){
+    		return isMatch(s.substring(1),p)||isMatch(s.substring(1),p.substring(1)) || isMatch(s,p.substring(1));
+    	}else{
+    		return false;
+    	}
+    }
+    
+    public static boolean allstar(String s){
+    	for(int i=0;i<s.length(); i++) {
+    		if(s.charAt(i)!='*') return false;
+    	}
+    	return true;
+    }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: multiply strings
+    public static String multiply(String num1, String num2) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	if(num1==null || num2== null) return null;
+    	if(num1.length()==0||num2.length()==0) return new String();
+    	if(num1.equals("0") || num2.equals("0")) return "0";
+    	
+    	int len1= num1.length();
+    	
+    	String result="";
+    	for(int i=len1-1; i>=0; i--) {
+    		String s1=mult(num1.charAt(i),num2);
+    		result=sum(result, s1, len1-i-1);
+    	}
+    	
+    	return result;
+    }
+    
+    
+    
+    public static String mult(char c, String num2){
+    	int n=Integer.parseInt(Character.toString(c));
+    	if(n==0||num2.equals("0")) return "0";
+    	
+    	StringBuffer sb=new StringBuffer();
+    	int carry=0;
+    	
+    	for(int i=num2.length()-1; i>=0; i--) {
+    		int prod=(num2.charAt(i)-'0')*n+carry;
+    		carry=prod/10;
+    		sb.append(prod%10);
+    	}
+    	
+    	if(carry>0) {
+    		sb.append(carry);
+    	}
+    	
+    	return sb.reverse().toString();
+    }
+    
+    
+    
+    
+    
+    public static String stringSum(String s1, String s2, int n) {
+    	if(s1=="") return s2;
+    	if(s2=="") return s1;
+    	
+    	
+    	for(int i=0; i<n; i++) {
+    		s2+='0';
+    	}
+    	
+    	if(s2=="0") return s1;
+    	if(s1=="0") return s2;
+    	
+    	StringBuffer sb=new StringBuffer();
+    	int carry=0;
+    	for(int i=s1.length()-1,j=s2.length()-1;i>=0 || j>=0; i--,j--) {
+    		int a=0, b=0;
+    		if(i>=0) {
+    			a=s1.charAt(i)-'0';
+    		}
+    		if(j>=0) {
+    			b=s2.charAt(j)-'0';
+    		}
+    		
+    		sb.append((a+b+carry)%10);
+    		carry=(a+b+carry)/10;
+    		
+    	}
+    	
+    	if(carry>0) {
+    		sb.append(carry);
+    	}
+    	
+    	return sb.reverse().toString();
+    	
+    }
+	
+////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Remove Nth Node From End of List
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	if(head==null) return null;
+    	
+    	
+    	ListNode front=head;
+    	for(int i=0; i<n; i++) {
+    		if(front!=null) {
+    			front=front.next;
+    		}else{
+    			return head;
+    		}
+    	}
+
+    	ListNode prev=null;
+    	ListNode cur=head;
+    	
+    	while(front!=null) {
+    		prev=cur;
+    		cur=cur.next;
+    		front=front.next;
+    	}
+    	
+    	if(cur==head) {
+    		cur=cur.next;
+    		head.next=null;
+    		return cur;
+    	}
+    	
+    	prev.next=cur.next;
+    	
+    	return head;
+    }
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Search in Rotated Sorted Array
+	public static int search(int[] A, int target) {
+		// Start typing your Java solution below
+		// DO NOT write main() function
+		int len = A.length;
+		if (target == A[0]){
+			return 0;
+		}
+
+		int start = 0;
+		int end = len - 1;
+
+		if (target > A[0]) {
+			while(start < end) {
+				
+				if(end-start==1){
+					if(A[start]==target) return start;
+					if(A[end]==target) return end;
+					return -1;
+				}
+				
+				if(A[(start+end)/2]<A[0]) {
+					end=(start+end)/2;
+				}else if(A[(start+end)/2]<target) {
+					
+						start=(start+end)/2;
+					
+				}else if(A[(start+end)/2]>target) {
+					end=(start+end)/2;
+				}else{
+					return (start+end)/2;
+				}
+			}
+			
+			if(A[start]==target) return start;
+			return -1;
+		} else {
+			while (start < end) {
+				if(end-start==1){
+					if(A[start]==target) return start;
+					if(A[end]==target) return end;
+					return -1;
+				}
+				
+				if (A[(start + end) / 2] > A[0]) {
+						start = (start + end) / 2;
+				} else if (A[(start + end) / 2] > target) {
+					end = (start + end) / 2;
+				} else if (A[(start + end) / 2] < target) {
+						start = (start + end) / 2;
+				}else{
+					return (start+end)/2;
+				}
+			}
+			if(A[start]==target) return start;
+			return -1;
+		}
+
+	}
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: search for a range
+    public int[] searchRange(int[] A, int target) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	int s=0;
+    	int e=A.length-1;
+    	
+    	int [] r={-1,-1};
+    	r[0]=findleft(A,s,e,target);
+    	r[1]=findright(A,s,e,target);
+    	return r;
+    }
+    
+    public static int findright(int []A, int s, int e, int target){
+		int r=-1;
+		if(s==e) {
+			return A[s]==target? s:r;
+		}
+    	while(s<e) {
+			if(e-s==1) {
+				if(A[e]==target) {
+					return e;
+				}
+				if(A[s]==target) {
+					return s;
+				}
+				return r;
+			}
+			
+			if(A[(s+e)/2]>target) {
+				e=(s+e)/2;
+			}
+			if(A[(s+e)/2]<=target) {
+				s=(s+e)/2;
+			}
+		}
+    	
+    	return r;
+    }
+    
+    public static int findleft(int []A, int s, int e, int target){
+		int r=-1;
+		if(s==e) {
+			return A[s]==target? s:r;
+		}
+    	while(s<e) {
+			if(e-s==1) {
+				if(A[s]==target) {
+					return s;
+				}
+				if(A[e]==target) {
+					return e;
+				}
+				return r;
+			}
+			
+			if(A[(s+e)/2]>=target) {
+				e=(s+e)/2;
+			}
+			if(A[(s+e)/2]<target) {
+				s=(s+e)/2;
+			}
+		}
+    	
+    	return r;
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Minimum Path Sum
+    public int minPathSum(int[][] grid) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+     
+    	int rows=grid.length;
+    	int cols=grid[0].length;
+    	int [][]P= new int[rows][cols];
+    	
+    	P[0][0]=grid[0][0];
+    	for(int i=1; i<rows; i++){
+    		P[i][0]=P[i-1][0]+grid[i][0];
+    	}
+    	
+    	for(int i=1; i<cols; i++){
+    			P[0][i]=P[0][i-1]+grid[0][i];
+    	}
+    	
+    	for(int i=1; i<rows; i++) {
+    		for(int j=1; j<cols; j++) {
+    			P[i][j]=Math.min(P[i-1][j], P[i][j-1])+grid[i][j];
+    		}
+    	}
+    	
+    	return P[rows-1][cols-1];
+    }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Edit distance (non DP version)
+	public static int minDistance(String word1, String word2) {
+		// Start typing your Java solution below
+		// DO NOT write main() function
+		int dist = 0;
+		Queue<String> qu1 = new LinkedList<String>();
+		HashSet<String> visited = new HashSet<String>();
+		visited.add(word1);
+		qu1.add(word1);
+		while (true) {
+			Queue<String> qu2 = new LinkedList<String>();
+			while (!qu1.isEmpty()) {
+				String w = qu1.poll();
+				if (w.equals(word2)) {
+					return dist;
+				}
+
+				qu2.addAll(OneEdit(visited, w));
+
+			}
+
+			if (qu2.isEmpty()) {
+				return -1;
+			}
+
+			qu1 = qu2;
+			dist++;
+		}
+	}
+
+	public static ArrayList<String> OneEdit(HashSet<String> visited, String word) {
+		ArrayList<String> al = new ArrayList<String>();
+		for (int i = 0; i < word.length(); i++) {
+			for (int j = 0; j < 26; j++) {
+				char c = (char) ('a' + j);
+
+				String newword = word.substring(0, i) + c
+						+ word.substring(i + 1);
+
+				if (!visited.contains(newword)) {
+					al.add(newword);
+					visited.add(newword);
+				}
+
+				String newword1 = word.substring(0, i) + c + word.substring(i);
+
+				if (!visited.contains(newword1)) {
+					al.add(newword1);
+					visited.add(newword1);
+				}
+			}
+
+			String newword2 = word.substring(0, i) + word.substring(i + 1);
+			if (!visited.contains(newword2)) {
+				al.add(newword2);
+				visited.add(newword2);
+			}
+			
+		}
+		
+		for (int j = 0; j < 26; j++) {
+			char c = (char) ('a' + j);
+			String newword1 = word+c;
+
+			if (!visited.contains(newword1)) {
+				al.add(newword1);
+				visited.add(newword1);
+			}
+		}
+		
+		return al;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//largest common substring
+	public static int commonSub(String s1, String s2) {
+		int len1=s1.length();
+		int len2=s2.length();
+		
+		int[][] dp=new int[len1+1][len2+1];
+		for(int i=0; i<len1+1; i++) {
+			dp[i][0]=0;
+		}
+		
+		for(int i=0; i<len2+1; i++) {
+			dp[0][i]=0;
+		}
+		
+		int max=0;
+		for(int i=1; i<len1+1; i++) {
+			for(int j=1; j<len2+1; j++) {
+				if(s1.charAt(i-1)==s2.charAt(j-1)) {
+					dp[i][j]=dp[i-1][j-1]+1;
+				}else{
+					dp[i][j]=0;
+				}
+				if(dp[i][j]>max) max=dp[i][j];
+			}
+		}
+		
+		return max;
+	}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// previous node in binary search tree BST
+	public static TreeNode prev(TreeNode nd) {
+		if(nd==null) return null;
+		
+		
+		if(nd.left==null) return rightParent(nd);
+		
+		
+		return rightmost(nd.left);
+	}
+	
+	
+	public static TreeNode rightParent(TreeNode nd) {
+		while(nd.parent !=null && nd.parent.right!=nd) {
+			nd=nd.parent;
+		}
+		
+		if(nd.parent.right==nd) return nd.parent;
+		else return null;
+	}
+	
+	public static TreeNode rightmost(TreeNode nd) {
+		if(nd==null) return null;
+		while(nd.right!=null) {
+			nd=nd.right;
+		}
+		return nd;
+	}
+////////////////////////////////////////////////////////////////////////////////////////////////
+//ebay interview preparation
+
+public static void findword(String s, char c) {
+		int prev=c-'a';
+		for(int i=0; i<s.length(); i++) {
+			move(prev,s.charAt(i)-'a' );
+			prev=s.charAt(i)-'a';
+		}
+	}
+	
+	public static void move(int i, int j) {
+		int row=i/5-j/5;
+		int col=i%5-j%5;
+		if(i==25){
+			for(int m=0; m<row; m++) {
+				up();
+			}
+			
+			for(int m=0; m<-col; m++) {
+				right();
+			}
+			output();
+		}else{
+			
+			if(col>0) {
+				for(int m=0; m<col; m++) {
+					left();
+				}
+			}else{
+				for(int m=0; m<-col; m++) {
+					right();
+				}
+			}
+			
+			if(row>0) {
+				for(int m=0; m<rows; m++) {
+					up();
+				}
+			}else{
+				for(int m=0; m<-rows; m++) {
+					down();
+				}
+			}
+		}
+		
+		output();
+	}
+	
+/////////////////////////////////////////////////////////////////////////////////////////
+//ebay preparation divide two numbers:
+	public static int divide(int a, int b) {
+		if(b>a) return 0;
+		
+		int res=0;
+		
+		while(a>b) {
+			int div=b;
+			a-=div;
+			res++;
+			
+			int count=1;
+			while(a>div+div) {
+				div+=div;
+				count+=count;
+				res+=count;
+				a-=div;
+			}
+		}
+		
+		return res;
+	}
+/////////////////////////////////////////////////////////////////////////////////////////
+//ebay preparation : integer number to String
+	public static String intToString(long n) {
+		int billion=0;
+		int million=0;
+		int thousand=0;
+		
+		int single=0;
+		
+		billion=(int) (n/1000000000);
+		million=(int)(n%1000000000)/1000000;
+		thousand=(int)(n%1000000)/1000;
+		
+		
+		single=(int)(n%1000);
+		
+		StringBuffer sb=new StringBuffer();
+		
+		if(billion!=0) {
+			sb.append(hund2String(billion));
+			sb.append(" Billion ");
+		}
+		
+		if(million!=0) {
+			sb.append(hund2String(million));
+			sb.append(" Million ");
+		}
+		
+		if(thousand!=0) {
+			sb.append(hund2String(thousand));
+			sb.append(" Thousand ");
+		}
+		
+		if(single!=0) {
+			sb.append(hund2String(single));
+		}
+		
+		return sb.toString();
+
+		
+	}
+	
+	public static String hund2String(int n) {
+		StringBuffer sb=new StringBuffer();
+	
+		String[] digits={"Zero", "One", "Two", "Three", "Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Forteen","Fifteen","Sixteen","Seventeen","Eighteen","Ninteen"};
+		String[] tens={"Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninty"};
+		if(n<20) return digits[n];
+		
+		int hundred=n/100;
+		if(hundred!=0) {
+			sb.append(digits[hundred]);
+			sb.append(" Hundred ");
+		}
+		
+		int remain=n%100;
+		
+		if(remain!=0 && hundred !=0) {
+			sb.append(" and ");
+		}
+		
+		if(remain<20) {
+			sb.append(digits[remain]);
+			return sb.toString();
+		}
+		
+		int t=remain/10;
+		int s=remain%10;
+		
+		sb.append(tens[t-2]);
+		sb.append('-');
+		
+		if(s!=0) {
+			sb.append(digits[s]);
+		}
+		
+		return sb.toString();
+	}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//ebay preparation: has max
+	public static boolean hasMax(int [] a) {
+		int len=a.length;
+		int max=0;
+		boolean result=false;
+		HashMap<Integer,Integer> count=new HashMap<Integer, Integer> ();
+		
+		for(int i=0; i<len; i++) {
+			if(count.containsKey(a[i])) {
+				int ct=count.get(a[i])+1;
+				count.put(a[i],ct);
+				if(ct>max) {
+					max=ct;
+					result=true;
+				}else if(ct==max) {
+					result=false;
+				}
+			}else{
+				count.put(a[i], 1);
+				if(1>max) {
+					max=1;
+					result=true;
+				}else if(1==max) {
+					result=false;
+				}
+			}
+		}
+		
+		return result;
+	}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Bloomberg
+
+	public static void main(String args[]) throws IOException {
+
+		//System.out.println(commonSub("stabed","stabed"));
+		int res=0;
+		
+		for(int sum=0; sum<28; sum++) {
+			int count=0;
+			for(int i=0; i<10 && i<=sum; i++) {
+				for(int j=0; j<10 && j<=sum-i; j++) {
+					 {
+						 	if(sum-i-j<10){
+						 		count++;
+						 	}
+					
+					}
+				}
+			}
+			
+			res+=count*count;
+		}
+		
+		System.out.println(res);
+		
+	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode : Convert Sorted List to Binary Search Tree
+Recursively build the tree.
+
+public class Solution {
+   
+    TreeNode sortToBST(ListNode[] list, int start, int end){
+        if(start > end) return null;
+       
+        int mid = (start + end) / 2;
+        TreeNode leftchild = sortToBST(list, start, mid-1);
+        TreeNode parent = new TreeNode(list[0].val);
+        parent.left = leftchild;
+        list[0] = list[0].next;
+        parent.right = sortToBST(list,mid+1, end);
+        return parent;
+    }
+   
+    public TreeNode sortedListToBST(ListNode head) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        ListNode[] l = new ListNode[1];
+        l[0] = head;
+        int len = 0;
+        while(head!=null){
+            len ++; head = head.next;
+        }
+        return sortToBST(l,0,len-1);
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+//leetcode: sort colors
+        public static void sortColors(int[] A) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        int c0=0;
+        int c1=0;
+        
+        
+        for(int i=0;i<A.length; i++) {
+        	if(A[i]==0) {
+        		c0++;
+        	}else if(A[i]==1)  {
+        		c1++;
+        	}
+        	
+        }
+        
+        for(int i=0; i<A.length;i++) {
+        	if(i<c0) {
+        		A[i]=0;
+        	}else if(i<c0+c1) {
+        		A[i]=1;
+        	}else{
+        		A[i]=2;
+        	}
+        }
+        
+    }
+///////////////////////////////////////////////////////////////////////////////////////
+//facebook reverse linkedlist recursive:
+    public static ListNode reverseListRecur(ListNode head) {
+    	if(head==null || head.next==null) return head;
+    	
+    	ListNode newHead=reverseListRecur(head.next);
+    	head.next.next=head;
+    	head.next=null;
+    	return newHead;
+        
+    }
+	
+/////////////////////////////////////////////////////////////////////////////////////
+//yang chao: \CE\D2֮ǰ\D7\F6\B9\FDrecursion\B5\C4 (reverse linkedlist pairwisely)
+void ReversePairRecursive(linkedNode head)
+	 {
+		 linkedNode temp;
+		 if(head==null||head.next==null)
+			 return;
+		 else
+		 {
+			 temp=head.next;
+			 head.next=temp.next;
+			 temp.next=head;
+			 ReversePairRecursive(head.next);
+		 }
+	 }
+/////////////////////////////////////////////////////////////////////////////////
+//leetcode\A3\BA valid parenthesis
+    public static boolean isValid(String s) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	
+    	Stack<Character> st=new Stack<Character>();
+    	for(int i=0; i<s.length();i++) {
+    		char c=s.charAt(i);
+    		if(c == '(' || c=='[' || c=='{') {
+    			st.add(c);
+    		}else{
+    			if(!st.isEmpty()) {
+    				if(! match(st.pop(),c)) {
+    					return false;
+    				}
+    			}else{
+    				return false;
+    			}
+    		}
+    	}
+    	
+    	if(st.isEmpty()){
+    		return true;
+    	}else{
+    		return false;   
+    	}
+    }
+    
+    public static boolean match(char c, char d) {
+    	if((c=='(' && d==')') || (c=='[' && d==']') || c=='{' && d=='}') {
+    		return true;
+    	}
+    	return false;
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: symmetric tree
+
+    public static boolean isSymmetric(TreeNode root) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	if(root==null) return true;
+    	else return mirror(root.left, root.right);
+        
+    }
+
+    public static boolean mirror(TreeNode root1, TreeNode root2) {
+    	if(root1==null) return root2==null? true:false;
+    	if(root2==null) return root1==null? true:false;
+    	if(mirror(root1.left,root2.right) && mirror(root1.right, root2.left) && root1.val==root2.val) {
+    		return true;
+    	}else{
+    		return false;
+    	}
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: is same tree?
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	
+    	if(p==null) return q==null?true:false;
+    	if(q==null) return p==null?true:false;
+    	
+    	if(isSameTree(p.left,q.left)&&isSameTree(p.right,q.right)&&p.val==q.val) {
+    		return true;
+    	}
+    	return false;
+    }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: interleaving string
+	public static boolean isInterleave(String s1, String s2, String s3) {
+		// Start typing your Java solution below
+		// DO NOT write main() function
+		if(s1.length()+s2.length()!=s3.length()) return false;
+		boolean[][] P = new boolean[s1.length() + 1][s2.length() + 1];
+		P[0][0]=true;
+		for(int i=1; i<=s1.length();i++) {
+			if(s1.charAt(i-1)==s3.charAt(i-1)){
+				P[i][0]=true;
+			}else{
+				P[i][0]=false;
+			}
+		}
+		
+		for(int i=1; i<=s2.length();i++) {
+			if(s2.charAt(i-1)==s3.charAt(i-1)){
+				P[0][i]=true;
+			}else{
+				P[0][i]=false;
+			}
+		}
+		
+		for (int i = 1; i <= s1.length(); i++) {
+			for (int j = 1; j <= s2.length(); j++) {
+				if ((s3.charAt(i + j - 1) == s2.charAt(j - 1) && P[i][j - 1])
+						|| s3.charAt(i + j - 1) == s1.charAt(i - 1)
+						&& P[i - 1][j]) {
+					P[i][j] = true;
+				}
+			}
+		}
+		return P[s1.length()][s2.length()];
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Unique Binary Search Trees II(small case passed, still problem)
+public static ArrayList<TreeNode> generateTrees(int n) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	int[] a=new int[n];
+    	for(int i=0;i<n; i++) {
+    		a[i]=i+1;
+    	}
+    	return generateTreeHelper(a);
+    }
+    
+    public static ArrayList<TreeNode> generateTreeHelper(int[] a) {
+    	ArrayList<TreeNode> al=new ArrayList<TreeNode>();
+    	int n=a.length;
+    	if(n==0) {
+    		al.add(null);
+    		return al;
+    	}
+    	if(n==1) {
+    		TreeNode n1=new TreeNode(a[0]);
+    		al.add(n1);
+    		return al;
+    	}
+    	
+    	for(int i=0;i<n;i++) {
+    		int [] b1=new int[i];
+    		int [] b2=new int[n-i-1];
+    		
+    		for(int j=0; j<i;j++) {
+    			b1[j]=a[j];
+    		}
+    		
+    		for(int j=i; j<n-1;j++) {
+    			b2[j-i]=a[j];
+    		}
+    		
+    		ArrayList<TreeNode> al1=generateTreeHelper(b1);
+    		ArrayList<TreeNode> al2=generateTreeHelper(b2);
+    		
+    		
+    		if(i==0) {
+    			for(TreeNode left: al2) {
+    				TreeNode mid=new TreeNode(a[n-1]);
+    				mid.left=left;
+    				al.add(mid);
+    			}
+    		}else if(i==n-1) {
+    			for(TreeNode top:al1) {
+    				TreeNode mid=new TreeNode(a[n-1]);
+    				rightMost(top).right=mid;
+    				al.add(top);
+    			}
+    		}else{
+    			for(TreeNode top: al1){
+    				TreeNode mid=new TreeNode(a[n-1]);
+    				rightMost(top).right=mid;
+    				for(TreeNode bottom: al2) {
+    					mid.left=bottom;
+    					al.add(top);
+    				}
+    			}
+    		}
+    	}
+    	
+    	return al;
+    }
+    public static TreeNode rightMost(TreeNode subhead) {
+    	TreeNode tmp=subhead;
+    	while(tmp.right != null) {
+    		tmp=tmp.right;
+    	}
+    	return tmp;
+    }
+/////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Unique Binary Search Trees
+	public static int numTrees(int n) {
+		// Start typing your Java solution below
+		// DO NOT write main() function
+		if (n == 0)
+			return 1;
+
+		int[] P = new int[n + 1];
+		P[0] = 1;
+
+		for (int j = 1; j <= n; j++) {
+			
+			for (int i = 0; i <= j - 1; i++) {
+				P[j] += P[i] * P[j - i - 1];
+			}
+		}
+		
+		return P[n];
+
+	}
+//////////////////////////////////////////////////////////////////////////////////////
+//facebook 2nd interview:
+public String add(String s1, String s2) {
+    if(s1==null || s2== null) return null;
+    
+    int len1=s1.length();
+    int len2=s2.length();
+        
+    int carry=0;
+    StringBuffer sb=new StringBuffer();
+    for(int i=len1-1,j=len2-1;i>=0 || j>=0; i--, j--) {
+        int a=0; 
+        int b=0;
+        if(i>=0) {
+            a=s1.charAt(i)-'0';
+        }
+        if(j>=0) {
+            b=s2.charAt(i)-'0';
+        }
+        char c=(char) ((a+b+carry)%2+'0');
+        carry=(a+b+carry)/2;
+        sb.append(c);
+    }//end for
+
+    if(carry>0) {
+        sb.append('1');
+    }
+    
+    return sb.toString().reverse();
+}
+
+public class StringBuffer {
+    char [] words;
+    int capacity=100;
+    int cur;
+    StringBuffer() {
+        words=new char[capacity];
+        cur=0;
+    }
+    public void append(char c) {
+        if(cur==capacity) {
+            capacity=2*capacity;
+            char[] tmp=words;
+            words=new char[capacity];
+            for(int i=0; i<tmp.length; i++) {
+                words[i]=tmp[i];
+            }
+        }
+        words[cur]=c;
+        cur++;
+    }
+    public String toString() {
+        //return words.toString();
+        return new String(words);
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////
+//leetcode: find median of two sorted arrays
+	public static double findMedianSortedArrays(int[] a, int [] b) {
+		int len1=a.length;
+		int len2=b.length;
+		
+		if((len1+len2)%2==1) {
+			return (double)findKth(a, b, (len1+len2)/2+1);
+		}else{
+			return ((double)findKth(a, b, (len1+len2)/2)+(double)findKth(a, b, (len1+len2)/2+1))/2;
+		}
+		
+	}
+	
+	
+	public static int findKth(int [] a, int [] b, int k) {
+		if(a.length==0) {
+			return b[k-1];
+		}
+		
+		if(b.length==0) {
+			return a[k-1];
+		}
+		
+		
+		if(k==1) return a[0]<b[0]?a[0]:b[0];
+		
+		int s=0, e=a.length;
+		
+		int ct=findNum(a[0],b,0,b.length);
+		if(ct+1>k) {
+			return b[k-1];
+		}else if(ct+1==k) {
+			return a[0];
+		}
+		
+		ct=findNum(a[a.length-1],b,0,b.length);
+		if(ct+a.length<k) {
+			return b[k-a.length-1];
+		}else if(ct+a.length==k) {
+			return a[a.length-1];
+		}
+		
+		
+		
+		while(s<e) {
+			
+			
+			int count=findNum(a[(s+e)/2], b, 0, b.length);
+			
+			if(count+(s+e)/2+1 >k) {
+				e=(s+e)/2;
+			}else if(count+(s+e)/2+1 <k){
+				s=(s+e)/2;
+			}else{
+				return a[(s+e)/2];
+			}
+			
+			if(e-s==1) {
+				return b[k-1-s-1];
+			}
+			
+			if(e-s==0) {
+				return b[k-1];
+			}
+			
+
+		}
+			
+		return a[s-1];
+	}
+	
+	
+	
+	public static int findNum(int m, int []a, int start, int end) {
+		int s=start, e=end;
+		
+		
+		while(s<e) {
+			if(e-s==1) {
+				if(a[s]>m) {
+					return s-start;
+				}else{
+					return e-start;
+				}
+			}
+			
+			if(a[s+(e-s)/2]<=m) {
+				s=s+(e-s)/2;
+			}else{
+				e=s+(e-s)/2;
+			}
+		}
+		return s-start;
+	}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode : Longest Substring Without Repeating Characters
+	public static int lengthOfLongestSubstring(String s) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+		HashMap<Character,Integer> map=new HashMap<Character, Integer> ();
+		int max=0;
+		int index=0;
+		for(int i=0; i<s.length(); i++) {
+			char c=s.charAt(i);
+			if(!map.containsKey(c)) {
+				map.put(c, i);
+			}else{
+				if(map.get(c)>=index) {
+					if(i-index>max) {
+						max=i-index;
+					}
+					index=map.get(c)+1;
+				}
+				map.put(c, i);
+			}
+		}//end for
+		
+		if(s.length()-index>max) {
+			max=s.length()-index;
+		}
+		return max;
+    }
+	
+////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Zigzag convertion (my solution with TreeMap)
+    public static String convert(String s, int nRows) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	int len=s.length();
+    	//int lastR=row(len-1, nRows);
+    	int lastC=col(len-1, nRows);
+    	TreeMap<Integer, Character> map=new TreeMap<Integer, Character>();
+    	
+    	for(int i=0; i< s.length(); i++) {
+    		int r=row(i,nRows);
+    		int c=col(i,nRows);
+    		map.put(r*(lastC+1)+c, s.charAt(i));
+    	}
+    	String res="";
+    	for(char c: map.values()) {
+    		res+=c;
+    	}
+    	
+    	return res;
+    	
+    }
+	
+    
+    
+    public static int row(int m, int nRows) {
+    	int a=m%(2*nRows-2);
+    	if(a<nRows) {
+    		return a;
+    	}else {
+    		return 2*(nRows-1)-a;
+    	}
+    }
+    
+    public static int col(int m, int nRows) {
+    	int a=m%(2*nRows-2);
+    	int mul=m/(2*nRows-2);
+    	int rem;
+    	if(a<nRows) {
+    		rem=0;
+    	}else{
+    		rem=a-nRows+1;
+    	}
+    	
+    	return rem+mul*(nRows-1);
+    }
+////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Palindrome Number
+    public static boolean isPalindrome(int x) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        if(x<0) return false;
+        if(x<10) return true;
+        
+        int y=x;
+        int mul=1;
+        while(y/10!=0) {
+        	y/=10;
+        	mul*=10;
+        }
+        
+        y=x;
+        
+        while(mul>1) {
+        	if(y/mul != y%10) {
+        		return false;
+        	}
+        	
+        	y-=(y/mul)*mul;
+        	y=y/10;
+        	mul/=100;
+        }
+         
+        return true;
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Container With Most Water
+	public int maxArea(int[] height) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        int len=height.length;
+        
+        int left=0, right=len-1;
+        int max=0;
+        
+        while(left<right) {
+        	
+        	if(height[left]<height[right]) {
+        		int tmp=height[left]*(right-left);
+        		if(tmp>max) {
+        			max=tmp;
+        		}
+        		
+        		while(height[left+1]<height[left]){
+        			left++;
+        		}
+        		left++;
+        		
+        		
+        	}else{
+        		int tmp=height[right]*(right-left);
+        		if(tmp>max) {
+        			max=tmp;
+        		}
+        		
+        		while(height[right-1]<height[right]){
+        			right--;
+        		}
+        		right--;
+        	}
+        }
+        
+        return max;
+        
+    }
+///////////////////////////////////////////////////////////////////////////////
+//leetcode: Longest Common Prefix
+	public String longestCommonPrefix(String[] strs) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+		
+		int len=strs.length;
+		if(len==0) return "";
+		StringBuffer sb=new StringBuffer();
+		
+		for(int i=0; ;i++) {
+			if(i==strs[0].length()) {
+				return sb.toString();
+			}
+			
+			char c=strs[0].charAt(i);
+			for(int j=1; j<len; j++) {
+				if(i==strs[j].length()) {
+					return sb.toString();
+				}
+				
+				if(strs[j].charAt(i)!=c) {
+					return sb.toString();
+				}
+			}
+			
+			sb.append(c);
+		}
+    }
+	
+//////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: 3Sum Cloest
+    public int threeSumClosest(int[] num, int target) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	Arrays.sort(num);
+    	int len=num.length;
+    	int diff=Integer.MAX_VALUE;
+    	int res=Integer.MAX_VALUE;
+    	
+    	for(int i=1; i<len-1;i++) {
+    		
+    		int j=0,k=len-1;
+    		while(k-j>1){
+    			if(num[j]+num[i]+num[k]>target) {
+    				if(num[j]+num[i]+num[k]-target<diff) {
+    					diff=num[j]+num[i]+num[k]-target;
+    					res=num[j]+num[i]+num[k];
+    				}
+    				
+    				if(k>i+1) {
+    					k--;
+    				}else{
+    					break;
+    				}
+    			}else{
+    				if(target-num[j]-num[i]-num[k]<diff) {
+    					diff=target-num[j]-num[i]-num[k];
+    					res=num[j]+num[i]+num[k];
+    				}
+    				
+    				if(j+1<i) {
+    					j++;
+    				}else{
+    					break;
+    				}
+    			}
+    		}
+    	}
+    	
+    	return res;
+    	
+    	
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: 4sum
+    public static ArrayList<ArrayList<Integer>> fourSum(int[] num, int target) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	HashMap<Integer, ArrayList<Integer[]>> map=new HashMap<Integer, ArrayList<Integer[]>>();
+    	int len=num.length;
+    	
+    	ArrayList<ArrayList<Integer>> alal=new ArrayList<ArrayList<Integer>>();
+    	
+    	if(len<4) return alal;
+    	
+    	
+    	for(int i=0; i<len-1; i++) {
+    		for(int j=i+1;j<len; j++) {
+    			ArrayList<Integer[]> al=new ArrayList<Integer[]>();
+				Integer[]pair={i,j};
+				al.add(pair);
+    			if(!map.containsKey(num[i]+num[j])) {
+    				map.put(num[i]+num[j], al);
+    			}else{
+    				map.get(num[i]+num[j]).add(pair);
+    			}
+    		}
+    	}
+    	
+    	
+    	for(int i=0; i<len-3; i++) {
+    		for(int j=i+1; j<len-2; j++) {
+    			if(map.containsKey(target-num[i]-num[j])) {
+    				for(Integer[] p: map.get(target-num[i]-num[j])) {
+    					if(p[0]>j) {
+    						ArrayList<Integer> al1=new ArrayList<Integer> ();
+    						al1.add(num[i]);
+    						al1.add(num[j]);
+    						al1.add(num[p[0]]);
+    						al1.add(num[p[1]]);
+    						alal.add(al1);
+    					}
+    				}
+    			}
+    		}
+    	}
+    	
+    	return alal;
+    	
+    	
+    }
+//////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Reverse Nodes in k-Group
+    public static ListNode reverseKGroup(ListNode head, int k) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	ListNode newhead=head, cur=head, prev=null;
+    	while(true) {
+    		ListNode last=prev;
+    		ListNode start=cur;
+    		for(int i=0; i<k; i++) {
+    			if(cur!=null) {
+    				prev=cur;
+    				cur=cur.next;
+    			}else{
+    				return newhead;
+    			}
+    		}
+    		if(last==null){
+    			newhead=reverseK(start,k);
+    		}else{
+    			last.next=reverseK(start,k);
+    		}
+    		prev=start;
+    		
+    	}
+    }
+	
+    
+    
+	public static ListNode reverseK(ListNode head, int k){
+    	if(head==null || head.next==null || k==1 || k==0) {
+    		return head;
+    	}
+    	
+    	ListNode newHead=reverseK(head.next,k-1);
+    	ListNode tmp=head.next.next;
+    	head.next.next=head;
+    	head.next=tmp;
+    	return newHead;
+    }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/////leetcode: Substring with Concatenation of All Words(if String[] L has no repeated words)
+
+    public static ArrayList<Integer> findSubstring(String S, String[] L) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	int LEN=S.length();
+    	int total=L.length;
+    	int subLen=L[0].length();
+    	
+    	HashSet<String> set=new HashSet<String>();
+    	for(int i=0; i<total; i++) {
+    		set.add(L[i]);
+    	}
+    	
+    	
+    	ArrayList<Integer> al=new ArrayList<Integer>();
+    	
+    	for(int i=0; i<=LEN-subLen; i++) {
+    		String word=S.substring(i,i+subLen);
+    		if(set.contains(word)) {
+    			HashSet<String> set1=new HashSet<String>();
+    			int count=0;
+    			for(int j=i; j<=LEN-subLen; j+=subLen) {
+    				String tmp=S.substring(j,j+subLen);
+    				if(set.contains(tmp)) {
+    					if(set1.contains(tmp)) {
+    						break;
+    					}else{
+    						set1.add(tmp);
+    						count++;
+    						if(count==total) {
+    							al.add(i);
+    							break;
+    						}
+    					}
+    				}else{
+    					break;
+    				}
+    			}
+    			
+    			
+    		}
+    	}
+    	
+    	return al;
+    }
+///////////////////////////////////////////////////////////////////////////////
+//leetcode: Search Insert Position
+    public int searchInsert(int[] A, int target) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	int len=A.length;
+    	if(target>A[len-1]) {
+    		return len;
+    	}
+    	if(target<=A[0]) {
+    		return 0;
+    	}
+    	
+    	int s=0, e=A.length;
+    	while(s<e) {
+    		if(e-s==1) {
+    			return s+1;
+    		}
+    		if(A[(e+s)/2]>=target){
+    			e=(e+s)/2;
+    		}else{
+    			s=(e+s)/2;
+    		}
+    	}
+    	return -1;
+        
+    }
+	
+////////////////////////////////////////////////////////////////////////////////////
+//leetcode: first missing positive
+    public static int firstMissingPositive(int[] A) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+        for(int i=0; i<A.length; i++) {
+
+        	if(A[i]>0 && A[i]<=A.length&& A[i]!=i+1) {
+        		
+        		int tmp=A[i];
+        		int index=i;
+        		A[i]=-1;
+        		
+        		while(tmp>0 && tmp<=A.length && tmp!=index+1) {
+        			index=tmp-1;
+        			int tp2=A[tmp-1];
+        			A[tmp-1]=tmp;
+        			tmp=tp2;
+        		}
+        	}
+        }
+        
+        for(int i=0; i<A.length; i++) {
+        	if(A[i]!= i+1) {
+        		return i+1;
+        	}
+        }       
+        return -1;
+    }
+    
+//////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Count and Say
+
+    public static String countAndSay(int n) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	int count=1;
+    	if(n==1) return "1";
+    	String tmp="1";
+    	
+    	StringBuffer sb=new StringBuffer();
+    	while(count<n){
+    		
+    		sb=new StringBuffer();
+    		char prev=tmp.charAt(0);
+    		int tmpCount=1;
+    		for(int i=1;i<tmp.length(); i++) {
+    			if(tmp.charAt(i)!=prev){
+    				sb.append(tmpCount);
+    				sb.append(prev);
+    				prev=tmp.charAt(i);
+    				tmpCount=1;
+    			}else{
+    				tmpCount++;
+    			}
+    		}//end for
+    		
+			sb.append(tmpCount);
+			sb.append(prev);
+			
+			tmp=sb.toString();
+			
+			count++;
+    	}
+    	
+    	return sb.toString();
+        
+    }
+	
+/////////////////////////////////////////////////////////////////////////////////////
+//marine software:  isBinarySearchTree
+
+class Node {
+    int val;
+    Node left;
+    Node right;
+
+}
+
+
+
+boolean isBinarySearchTree(Node n) {
+    return isBST(n, INTEGER.MIN_VALUE, INTEGER.MAX_VALUE);
+
+}
+
+boolean isBST(Node n, int min, int max) {
+    
+    if(n==null) return true;
+    
+    boolean condition=isBST(n.left, min, n.val) && isBST(n.right,n.val,max);
+    condition =condition &&  (min<n.val) && (n.val<max);
+    return condition;
+
+}
+
+/////////////////
+regular way to find out Binary Search Tree(do inorder traversal, to see if they are increasing order)
+	public static ArrayList<TreeNode> inOrder(TreeNode root) {
+		if(root==null) return null;
+		ArrayList<TreeNode> al= new ArrayList<TreeNode> ();
+		Stack<TreeNode> stack=new Stack<TreeNode> ();
+		
+		TreeNode p=root;
+		
+		while(true) {
+			while(p!=null) {
+				stack.push(p);
+				p=p.left;
+			}
+			if(stack.isEmpty()) break;
+			
+			TreeNode q=stack.pop();
+			al.add(q);
+			p=q.right;
+		}
+		
+		return al;
+	}
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+//Amazon: firstOccurence of an element (each element differ by +1 or -1)
+	public static int firstOccurene(int [] input, int expected) {
+		int current=0;
+		int diff=Math.abs(input[current]-expected);
+		
+		while(diff!=0 && current<input.length) {
+			diff=Math.abs(input[current]-expected);
+			current+=diff;
+		}
+		
+		if(diff==0) {
+			return current;
+		}
+		
+		return -1;
+	}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//leetcode string scramble
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <string>
+
+using namespace std;
+
+#define BITMAP_LEN 256
+
+bool compare_char_set(const char *s1, const char *s2, int len) {
+
+int bitmap[BITMAP_LEN];
+int i;
+memset(bitmap, 0, sizeof(int)*BITMAP_LEN);
+for(i=0; i<len; i++) {
+bitmap[(unsigned int)s1[i]] ++;
+bitmap[(unsigned int)s2[i]] --;
+}
+
+for(i=0; i<BITMAP_LEN; i++)
+if(bitmap[i]!=0)
+return false;
+return true;
+}
+
+
+
+
+
+
+bool test_scramble(const char *s1, const char *s2, int n) {
+if(!s1 || !s2)
+return false;    
+
+if(n == 1)
+if(*s1 == *s2)
+return true;
+else
+return false;	
+
+
+for(int i=1; i<n; i++) {
+bool find_root = false;
+if(compare_char_set(s1, s2, i) && compare_char_set(s1+i, s2+i, n-i)) {
+find_root = true;
+
+//printf("Find first type root position %d\n", i);	
+if(test_scramble(s1, s2, i) && test_scramble(s1+i, s2+i, n-i))
+return true;
+}
+
+if(compare_char_set(s1, s2+(n-i), i) && compare_char_set(s1+i, s2, n-i)) {
+find_root = true;
+//printf("Find second type root position %d\n", i);	
+
+if(test_scramble(s1, s2+(n-i), i) && test_scramble(s1+i, s2, n-i))
+return true;
+}
+
+}
+return false;
+}
+
+class Solution {
+public:
+    bool isScramble(string s1, string s2) {
+        if(s1.length() != s2.length())
+            return false;
+        
+        return test_scramble(s1.c_str(), s2.c_str(), s1.length());
+    }    
+};
+
+/////////////////////////////////////////////////////////////////////////
+//scramble string
+
+
+bool isScrambleHelper(const string &s1, const string &s2,  map<pair<string, 
+string>, bool> &myMap)
+{
+    pair<string, string> key = make_pair(s1, s2);
+    if (myMap.count(key) != 0) return myMap[key];
+    bool result = false;
+    if (s1 == s2) {
+        result = true;
+    }  else if (s1.size() != s2.size() ) {
+        result = false;
+    } else {
+    for (int i = 1; i < s1.size(); i++) {
+            if ((isScrambleHelper(s1.substr(0, i), s2.substr(0,i),myMap) &&
+                isScrambleHelper(s1.substr(i, s1.size()-i), s2.substr(i, s2.
+size()-i), myMap)) ||
+                (isScrambleHelper(s1.substr(0, i), s2.substr(s2.size()-i,i),
+myMap) &&
+                isScrambleHelper(s1.substr(i, s1.size()-i),  s2.substr(0,s1.
+size()-i), myMap))) {
+                    result = true;
+                    break;
+            }
+    }
+    }
+    myMap[key] = result;
+    return result;
+}
+
+
+class Solution {
+    public:
+        bool isScramble(string s1, string s2) {
+             map<pair<string, string>, bool> myMap;
+             return isScrambleHelper(s1, s2, myMap);
+        }
+};
+
+////////////////////////////////////////////////////////////////////////////
+//leetcode: Best Time to Buy and Sell Stock
+public class Solution {
+    
+    public int maxProfit(int[] prices) {
+        if(prices.length==0) return 0;
+        return maxProfit1(prices, 0, prices.length-1);
+    }
+    
+    public static int maxProfit1(int[] prices, int start, int end) {
+        int min=prices[start];
+    	int maxProfit=0;
+    	
+    	for(int i=start+1;i<=end;i++) {
+    		if(prices[i]<min) {
+    			min=prices[i];
+    		}else if(prices[i]-min>maxProfit){
+    			maxProfit=prices[i]-min;
+    		}
+    	}
+    	
+    	return maxProfit;
+    }
+}
+////////////////////////////////////////////////////////////////////////////
+//leetcode: Best Time to Buy and Sell Stock II (small case passed)
+
+    public static int maxProfit(int[] prices) {
+    	return maxProfitN(prices, 0, prices.length-1);        
+    }
+    
+    public static int maxProfitN(int[] prices, int start, int end) {
+    	if(end-start<1) return 0;
+    	if(end-start==1) {
+    		return prices[end]-prices[start]>0? prices[end]-prices[start] : 0;
+    	}
+    	
+    	int max=maxProfit1(prices, start, end);
+    	
+    	for(int i=start; i<end; i++) {
+    		if(maxProfitN(prices, start,i)+maxProfit1(prices, i+1,end)>max) {
+    			max=maxProfitN(prices, start,i)+maxProfit1(prices, i+1,end);
+    		}
+    	}
+    	
+    	return max;
+    }
+    
+    
+    public static int maxProfit1(int[] prices, int start, int end) {
+        int min=prices[start];
+    	int maxProfit=0;
+    	
+    	for(int i=start+1;i<=end;i++) {
+    		if(prices[i]<min) {
+    			min=prices[i];
+    		}else if(prices[i]-min>maxProfit){
+    			maxProfit=prices[i]-min;
+    		}
+    	}
+    	
+    	return maxProfit;
+    }
+	
+//////////////////////////////////////////////////////////////////////////
+//leetcode:  Best Time to Buy and Sell Stock II \A3\A8good\A3\A9
+    int maxProfit(vector<int> &prices) {  
+      // Start typing your C/C++ solution below  
+      // DO NOT write int main() function  
+      int max=0;  
+      int sum = 0;  
+      for(int i =1; i< prices.size(); i++)  
+      {  
+        int diff = prices[i] -prices[i-1];  
+        if(diff>0)  
+          sum+=diff;  
+      }  
+      return sum;  
+    }  
+/////////////////////////////////////////////////////////////////////
+//[LeetCode] Remove Duplicates from Sorted Array II
+1:    int removeDuplicates(int A[], int n) {  
+2:      // Start typing your C/C++ solution below  
+3:      // DO NOT write int main() function  
+4:      if(n<=1) return n;  
+5:      int pre=1, cur =1;  
+6:      int occur = 1;  
+7:      while(cur<n)  
+8:      {  
+9:        if(A[cur] == A[cur-1])  
+10:        {  
+11:          if(occur >=2)  
+12:          {  
+13:            cur++;          
+14:            continue;  
+15:          }  
+16:          else  
+17:          {  
+18:            occur++;  
+19:          }  
+20:        }  
+21:        else  
+22:        {  
+23:          occur = 1;   
+24:        }        
+25:        A[pre] = A[cur];  
+26:        pre++;  
+27:        cur++;        
+28:      }  
+29:      return pre;  
+30:    }  
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Construct Binary Tree from Preorder and Inorder Traversal
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	if(inorder.length==0) return null;
+    	if(inorder.length==1) return new TreeNode(inorder[0]);
+    	
+    	int r=postorder[postorder.length-1];
+        TreeNode root= new TreeNode(r);
+        
+        int index=0;
+        for(; index<inorder.length && inorder[index]!=r; index++) {
+        	
+        }
+        
+        int[]leftInorder= new int[index+1];
+        int[]rightInorder=new int[inorder.length-index-1];
+
+        int[]leftPostorder= new int[index+1];
+        int[]rightPostorder=new int[inorder.length-index-1];
+        
+        for(int i=0; i<=index; i++) {
+        	leftInorder[i]=inorder[i];
+        	leftPostorder[i]=postorder[i];
+        }
+        
+        for(int i=0; i<=inorder.length-index; i++) {
+        	rightInorder[i]=inorder[index+1+i];
+        	rightPostorder[i]=postorder[index+1+i];
+        }
+        
+        TreeNode leftTree=buildTree(leftInorder,leftPostorder);
+        TreeNode rightTree=buildTree(rightInorder,rightPostorder);
+        root.left=leftTree;
+        root.right=rightTree;
+        return root;
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: Populating Next Right Pointers in Each Node I & II
+    public void connect(TreeLinkNode root) {
+        // Start typing your Java solution below
+        // DO NOT write main() function
+    	if(root==null) return;
+    	if(root.left!=null) {
+    		root.left.next=root.right;
+    	}
+    	
+    	if(root.right!=null) {
+    		root.right.next= root.next? root.next.left:null;
+    	}
+    	
+    	connect(root.left);
+    	connect(root.right);
+    	
+    }
+	
+	
+	//////////////////////
+1:    void connect(TreeLinkNode *root) {  
+2:      // Start typing your C/C++ solution below  
+3:      // DO NOT write int main() function  
+4:      if(root== NULL) return;  
+5:      TreeLinkNode* p = root->next;  
+6:      while(p!=NULL)  
+7:      {  
+8:         if(p->left!=NULL)  
+9:         {  
+10:            p = p->left;  
+11:            break;  
+12:        }  
+13:        if(p->right!=NULL)  
+14:        {  
+15:           p = p->right;  
+16:           break;  
+17:        }  
+18:        p = p->next;  
+19:      }  
+20:      if(root->right!= NULL)  
+21:      {        
+22:        root->right->next = p;  
+23:      }  
+24:      if(root->left !=NULL)  
+25:      {        
+26:        root->left->next = root->right? root->right:p;        
+27:      }  
+28:      connect(root->right);  
+29:      connect(root->left);      
+30:    }  
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+//leetcode: N-Queens II
+  public static int totalNQueens(int n){
+    int[] map = new int[n];
+    return nQueensIIHelper(map, n, 0);
+}
+
+public static int nQueensIIHelper(int[] map, int n, int row){
+    if(row >= n || n == 1)
+        return 1;
+
+    int sum = 0;
+    for(int i = 0; i < n; i++)
+    {
+        boolean valid = true;
+		
+		//to check validity of adding one element to map.
+        for(int j = 0; j < row; j++)
+        {
+            if(i == map[j] || Math.abs(i - map[j]) == row - j)   //i is column number
+            {
+                valid = false;
+                break;
+            }
+        }
+		
+        if(valid)
+        {
+            map[row] = i;
+            sum += nQueensIIHelper(map, n, row + 1);
+        }
+    }
+    return sum;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+///permutation of an array
+   public static void permute(int []a, int k){   //from 0 to k-1 already fixed
+	   if(k==a.length) {
+		   print(a);
+		   return;
+	   }
+	   
+	   for(int i=k;i<a.length; i++) {
+		   swap(a,k,i);
+		   permute(a, k+1);
+		   swap(a,k,i);
+	   }
+   }
+
+   public static void swap(int[]a, int i, int j) {
+	   int tmp=a[i];
+	   a[i]=a[j];
+	   a[j]=tmp;
+   }
+   
+   public static void print(int[]a) {
+	   for(int i=0; i<a.length; i++) {
+		   System.out.print(a[i]);
+	   }
+	   System.out.println();
+   }
+///////////////////////////////////////////////////////////////////////////////////////////////////
+   
